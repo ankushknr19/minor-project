@@ -3,7 +3,7 @@ import env from 'dotenv'
 
 env.config();
 
-const jwtGenerator(user_id) => {
+const jwtGenerator = (user_id) => {
    const payload = {
       user: user_id,
    };

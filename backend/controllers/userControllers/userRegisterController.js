@@ -1,15 +1,15 @@
- import bcrypt from 'bcrypt'
+ import bcrypt from 'bcryptjs'
 import pool from '../../database/db.js'
-import { userRegisterValidateSchema } from '../../middleware/validatorMiddleware'
+import { userRegisterValidateSchema } from '../../middleware/validatorMiddleware.js'
 import asyncHandler from 'express-async-handler'
-import tokenGenerator from '../../utils/jwtGenerator'
+import jwtGenerator from '../../utils/jwtGenerator.js'
 
 
 const userRegister = asyncHandler(async (req, res) => {
     const validateResult = await userRegisterValidateSchema.validateAsync(
         req.body
     )
-    const searchUser = await db.query(`SELECT * FROM users where email=$1`, [
+    const searchUser = await pool.query(`SELECT * FROM users where email=$1`, [
         validateResult.email,
     ])
 
@@ -18,7 +18,7 @@ const userRegister = asyncHandler(async (req, res) => {
     if (searchUser.rows.length > 0) {
         res.status(401).send('User Already Exists')
     }
-    const newUser = await db.query(
+    const newUser = await pool.query(
         `INSERT INTO users(name,email,password) VALUES ($1,$2,$3) RETURNING * `,
         [
             validateResult.name,
@@ -26,11 +26,11 @@ const userRegister = asyncHandler(async (req, res) => {
             hashedPassword,
         ]
     )
-    const jwtToken = tokenGenerator(newUser.rows[0].user_id)
+    const jwtToken = jwtGenerator(newUser.rows[0].user_id)
     if (newUser.rows.length > 0) {
         res.status(201).json({
             message: 'user registered successfully',
-            Userid: newUser.rows[0].user_id,
+            user_id: newUser.rows[0].user_id,
             name: newUser.rows[0].name,
             email: newUser.rows[0].email,
             jwtToken,

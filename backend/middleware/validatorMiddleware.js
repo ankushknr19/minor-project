@@ -12,4 +12,4 @@ const userLoginValidateSchema = joi.object({
 });
 
 
-export { userRegisterValidateSchema, userLoginValidateSchema, userUpdateValidateSchema }
+export { userRegisterValidateSchema, userLoginValidateSchema }

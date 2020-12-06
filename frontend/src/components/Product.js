@@ -4,9 +4,9 @@ import { Card } from 'react-bootstrap'
 
 const Product = ({ product }) => {
   return (
-    <Link to={`/products/${product._id}`}>
+    <Link to={`/products/${product.product_id}`}>
     <Card className='my-3 p-3 rounded'>
-        <Card.Img src={product.image} variant='top' />
+        <Card.Img src={product.product_image} variant='top' />
      
 
       <Card.Body>
@@ -16,15 +16,11 @@ const Product = ({ product }) => {
         </Card.Title>
 
         <Card.Text>
-          {product.name}
+          {product.product_name}
         </Card.Text>
 
-        {/* <Card.Text as='div'>
-                    {product.rating} from {product.numReviews} reviews
-                </Card.Text> */}
-
         <Card.Text as='h5'>
-          ${product.price}
+          Rs {product.product_price}
         </Card.Text>
       </Card.Body>
     </Card>

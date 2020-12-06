@@ -35,21 +35,21 @@ const ProductScreen = ({ match, history }) => {
       : (
         <Row>
           <Col md={6}>
-            <Image src={product.image} alt={product.name} fluid />
+            <Image src={product.product_image} alt={product.product_name} fluid />
           </Col>
           <Col md={3}>
             <ListGroup variant='flush'>
               <ListGroup.Item>
-                <h3>{product.name}</h3>
+                <h3>{product.product_name}</h3>
               </ListGroup.Item>
               <ListGroup.Item>
                 <h5>{product.vendor}</h5>
               </ListGroup.Item>
               <ListGroup.Item>
-                <h4> Price: ${product.price} </h4>
+                <h4> Price: Rs {product.product_price} </h4>
               </ListGroup.Item>
               <ListGroup.Item>
-                Description: {product.description}
+                Description: {product.product_description}
               </ListGroup.Item>
             </ListGroup>
           </Col>
@@ -60,7 +60,7 @@ const ProductScreen = ({ match, history }) => {
                   <Row>
                     <Col>Price:</Col>
                     <Col>
-                      <strong>${product.price}</strong>
+                      <strong>Rs {product.product_price}</strong>
                     </Col>
                   </Row>
                 </ListGroup.Item>
@@ -68,12 +68,12 @@ const ProductScreen = ({ match, history }) => {
                   <Row>
                     <Col>Status:</Col>
                     <Col>
-                      {product.countInStock > 0 ? 'In Stock' : 'Out of Stock'}
+                      {product.count_in_stock > 0 ? 'In Stock' : 'Out of Stock'}
                     </Col>
                   </Row>
                 </ListGroup.Item>
 
-                {product.countInStock > 0 && (
+                {product.count_in_stock > 0 && (
                     <ListGroup.Item>
                       <Row>
                         <Col>Qty</Col>
@@ -83,15 +83,8 @@ const ProductScreen = ({ match, history }) => {
                             value={qty}
                             onChange={(e) => setQty(e.target.value)}
                           >
-                            {/* {[...Array(product.countInStock).keys()].map(
-                              (x) => (
-                                <option key={x + 1} value={x + 1}>
-                                  {x + 1}
-                                </option>
-                              )
-                            )} */}
                             {
-                              Array.from({length: product.countInStock}, (v,i) => i).map(
+                              Array.from({length: product.count_in_stock}, (v,i) => i).map(
                                 (x) => (
                                   <option key={x + 1} value={x + 1}>
                                     {x + 1}
@@ -109,7 +102,7 @@ const ProductScreen = ({ match, history }) => {
                 <ListGroup.Item>
                   <Button
                   onClick = {addToCartHandler}
-                  className='btn-block' type='button' disabled={product.countInStock === 0}>
+                  className='btn-block' type='button' disabled={product.count_in_stock === 0}>
                     Add to Cart
                   </Button>
                 </ListGroup.Item>

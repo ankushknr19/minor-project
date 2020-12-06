@@ -1,11 +1,11 @@
 const vendors = [
     {
-        _id: '1',
-        name: 'Hawa Vendor'
+        vendorId: '1',
+        vendorName: 'Hawa Vendor'
     },
     {
-        _id: '2',
-        name: 'Hello vendor'
+        vendorId: '2',
+        vendorName: 'Hello vendor'
     }
 ]
 

@@ -16,7 +16,10 @@
     "bcryptjs": "^2.4.3",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "express-async-handler": "^1.1.4"
+    "express-async-handler": "^1.1.4",
+    "joi": "^17.3.0",
+    "jsonwebtoken": "^8.5.1",
+    "pg": "^8.5.1"
   },
   "devDependencies": {
     "concurrently": "^5.3.0",

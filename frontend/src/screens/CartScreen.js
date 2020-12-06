@@ -10,7 +10,6 @@ const CartScreen = ({ match, location, history }) => {
 
   const qty = location.search ? Number(location.search.split('=')[1]) : 1
 
-console.log(qty)
   const dispatch = useDispatch()
 
   const cart = useSelector((state) => state.cart)
@@ -47,9 +46,9 @@ console.log(qty)
                     <Image src={item.image} alt={item.name} fluid rounded />
                   </Col>
                   <Col md={3}>
-                    <Link to={`/product/${item.product}`}>{item.name}</Link>
+                    <Link to={`/products/${item.product}`}>{item.name}</Link>
                   </Col>
-                  <Col md={2}>${item.price}</Col>
+                  <Col md={2}>Rs {item.price}</Col>
                   <Col md={2}>
                     <Form.Control
                       as='select'
@@ -60,11 +59,16 @@ console.log(qty)
                         )
                       }
                     >
-                      {[...Array(item.countInStock).keys()].map((x) => (
-                        <option key={x + 1} value={x + 1}>
-                          {x + 1}
-                        </option>
-                      ))}
+                      
+                      {
+                              Array.from({length: item.count_in_stock}, (v,i) => i).map(
+                                (x) => (
+                                  <option key={x + 1} value={x + 1}>
+                                    {x + 1}
+                                  </option>
+                                )
+                              )
+                            }
                     </Form.Control>
                   </Col>
                   <Col md={2}>
@@ -90,8 +94,7 @@ console.log(qty)
                 Subtotal ({cartItems.reduce((acc, item) => acc + item.qty, 0)})
                 items
               </h2>
-              $
-              {cartItems
+              Rs {cartItems
                 .reduce((acc, item) => acc + item.qty * item.price, 0)
                 .toFixed(2)}
             </ListGroup.Item>

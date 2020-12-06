@@ -21,11 +21,10 @@ const HomeScreen = () => {
 
   useEffect(() => {
     dispatch(listProducts())
+    dispatch(listVendors())
   }, [dispatch])
 
-  useEffect( () => {
-    dispatch(listVendors())
-  },[dispatch])
+  console.log(vendors)
 
   return (
     <>
@@ -41,11 +40,11 @@ const HomeScreen = () => {
             {products.length === 0 && <Message variant='danger'>No product found</Message>}
             {products.length > 0 &&
                 products?.map(product => (
-                  <Col sm={12} md={6} lg={4} xl={3}>
+                  <Col key={product.product_id} sm={12} md={6} lg={4} xl={3}>
                     <Product product={product} />
                   </Col>
                 ))
-}
+            }
             </Row>}
             <h1>Shops</h1>
             {vendorListLoading

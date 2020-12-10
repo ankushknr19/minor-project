@@ -24,8 +24,6 @@ const HomeScreen = () => {
     dispatch(listVendors())
   }, [dispatch])
 
-  console.log(vendors)
-
   return (
     <>
       <h1>Latest Products</h1>
@@ -55,7 +53,7 @@ const HomeScreen = () => {
           <Row>
           {
             vendors.map(vendor => (
-              <Col sm={12} md={6} lg={4} xl={3}>
+              <Col key={vendor.vendor_id} sm={12} md={6} lg={4} xl={3}>
                 <Vendor vendor = {vendor} />
               </Col>
             ))

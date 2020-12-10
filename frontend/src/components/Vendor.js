@@ -4,9 +4,9 @@ import { Link } from 'react-router-dom'
 
 const Vendor = ({vendor}) => {
     return (
-        <Link to={`/vendors/${vendor.vendorId}`}>
+        <Link to={`/vendors/${vendor.vendor_id}`}>
             <>
-                <h4>{vendor.vendorName}</h4>
+                <h4>{vendor.vendor_name}</h4>
             </>
         </Link>
     )

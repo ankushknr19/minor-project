@@ -1,5 +1,5 @@
-import pool from '../../database/db.js'
 import bcrypt from 'bcryptjs'
+import pool from '../../database/db.js'
 import asyncHandler from 'express-async-handler'
 import jwtGenerator from '../../utils/jwtGenerator.js'
 import { userLoginValidateSchema } from '../../middleware/validatorMiddleware.js'

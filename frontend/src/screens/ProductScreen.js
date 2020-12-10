@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 import { listProductDetails } from '../actions/productActions'
@@ -43,8 +44,10 @@ const ProductScreen = ({ match, history }) => {
                 <h3>{product.product_name}</h3>
               </ListGroup.Item>
               <ListGroup.Item>
-                <h5>{product.vendor}</h5>
-              </ListGroup.Item>
+                   <Link to={`/vendors/${product.vendor_id}`}>
+                       <h4>{product.vendor_name}</h4>
+                   </Link>
+               </ListGroup.Item>
               <ListGroup.Item>
                 <h4> Price: Rs {product.product_price} </h4>
               </ListGroup.Item>

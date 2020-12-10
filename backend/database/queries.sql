@@ -22,8 +22,7 @@ CREATE TABLE products
     CREATE TABLE users
     (
         user_id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
-        first_name VARCHAR(255)NOT NULL,
-        last_name VARCHAR(255) NOT NULL,
+        name VARCHAR(255)NOT NULL,
         email VARCHAR(255) NOT NULL,
         password VARCHAR(255) NOT NULL,
         is_admin BOOLEAN DEFAULT FALSE,
@@ -38,3 +37,12 @@ CREATE TABLE products
             (first_name, last_name, email, password, is_admin)
         values
             ('Ankush', 'Kunwar', 'ank.knr@gmail.com', 'test123', 'true' );
+
+        CREATE TABLE vendors
+        (
+            vendor_id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+            name VARCHAR(255)NOT NULL,
+            created_at TIMESTAMP
+            WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP ,
+
+);      

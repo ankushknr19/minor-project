@@ -1,10 +1,9 @@
 import express from 'express'
 import dotenv from 'dotenv'
-import products from './data/products.js'
-import vendors from './data/vendors.js'
 import productRoutes from './routes/productRoutes.js'
 import userRoutes from './routes/userRoutes.js'
 import vendorRoutes from './routes/vendorRoutes.js'
+import { notFound, errorHandler } from './middleware/errorMiddleware.js'
 
 dotenv.config()
 
@@ -19,6 +18,9 @@ app.get('/', (req, res) => {
 app.use('/api/products', productRoutes)
 app.use('/api/users', userRoutes)
 app.use('/api/vendors', vendorRoutes)
+
+app.use(notFound)
+app.use(errorHandler)
 
 const PORT = process.env.PORT || 5000
 

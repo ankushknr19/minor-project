@@ -11,5 +11,9 @@ const userLoginValidateSchema = joi.object({
    password: joi.string().required(),
 });
 
+const userUpdateValidateSchema = joi.object({
+   mame: joi.string().min(3),
+   password: joi.string().min(6).required(),
+})
 
-export { userRegisterValidateSchema, userLoginValidateSchema }
+export { userRegisterValidateSchema, userLoginValidateSchema, userUpdateValidateSchema }

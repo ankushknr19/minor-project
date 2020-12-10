@@ -8,15 +8,14 @@ const Product = ({ product }) => {
     <Card className='my-3 p-3 rounded'>
         <Card.Img src={product.product_image} variant='top' />
      
-
       <Card.Body>
 
         <Card.Title>
-          {product.vendor}
+          {product.product_name}
         </Card.Title>
 
         <Card.Text>
-          {product.product_name}
+          {product.vendor_name}
         </Card.Text>
 
         <Card.Text as='h5'>

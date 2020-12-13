@@ -17,10 +17,10 @@ import jwtGenerator from '../../utils/jwtGenerator.js'
         `SELECT * FROM users WHERE user_id=$1`,
         [req.user]
     )
-    const jwtToken = tokenGenerator(searchDbResults.rows[0].user_id)
+    
     if (searchDbResults.rows.length == 0) {
-        res.status(400)
-        throw new Error('Unauthorized')
+        res.status(404)
+        throw new Error('User not found')
     } else {
         const dbResults = await pool.query(
             'UPDATE users SET name=$1,password=$2 WHERE user_id=$3 RETURNING * ',
@@ -34,7 +34,7 @@ import jwtGenerator from '../../utils/jwtGenerator.js'
             message: 'Successfully Updated',
             user_id: dbResults.rows[0].user_id,
             name: dbResults.rows[0].name,
-            jwtToken,
+            jwtToken: jwtGenerator(searchDbResults.rows[0].user_id),
         })
     }
 })

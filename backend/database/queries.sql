@@ -11,7 +11,6 @@ CREATE TABLE products
     created_at TIMESTAMP
     WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
-    -- FOREIGN KEY (product_id) REFERENCES reviews(review_id)
 
     insert into products
         (product_name, product_image, product_description, product_price, count_in_stock)
@@ -33,16 +32,30 @@ CREATE TABLE products
         (email)
 );
 
-        insert into users
-            (first_name, last_name, email, password, is_admin)
-        values
-            ('Ankush', 'Kunwar', 'ank.knr@gmail.com', 'test123', 'true' );
-
+        --vendor table
         CREATE TABLE vendors
         (
             vendor_id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+            user_id uuid,
             name VARCHAR(255)NOT NULL,
             created_at TIMESTAMP
             WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP ,
+	        FOREIGN KEY
+            (user_id) REFERENCES users
+            (user_id)
 
-);      
+);
+
+            --customer table
+            CREATE TABLE customers
+            (
+                customer_id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+                user_id uuid,
+                name VARCHAR(255)NOT NULL,
+                created_at TIMESTAMP
+                WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP ,
+	    FOREIGN KEY
+                (user_id) REFERENCES users
+                (user_id)
+
+);

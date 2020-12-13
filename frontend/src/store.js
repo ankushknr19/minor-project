@@ -15,14 +15,14 @@ import {
 } from './reducers/userReducers'
 
 const reducer = combineReducers({
+  userLogin: userLoginReducer,
+  userRegister: userRegisterReducer,
   vendorList: vendorListReducer,
   vendorDetails: vendorDetailsReducer,
   productList: productListReducer,
   productDetails: productDetailsReducer,
   vendorProductList: vendorProductListReducer,
   cart: cartReducer,
-  userLogin: userLoginReducer,
-  userRegister: userRegisterReducer,
   userDetails: userDetailsReducer,
   userUpdateProfile: userUpdateProfileReducer,
   userList: userListReducer,

@@ -12,7 +12,7 @@ const userLoginValidateSchema = joi.object({
 });
 
 const userUpdateValidateSchema = joi.object({
-   mame: joi.string().min(3),
+   name: joi.string().min(3),
    password: joi.string().min(6).required(),
 })
 

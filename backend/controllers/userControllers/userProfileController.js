@@ -10,7 +10,7 @@ export const userProfile = asyncHandler(async (req, res) => {
         res.status(400)
         throw new Error('User Not Found')
     } else {
-        res.json({
+        res.status(200).json({
             user_id: userDbResults.rows[0].user_id,
             name: userDbResults.rows[0].name,
             email: userDbResults.rows[0].email,

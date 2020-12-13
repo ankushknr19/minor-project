@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { LinkContainer } from 'react-router-bootstrap'
 import { Navbar, Nav, Container, NavDropdown } from 'react-bootstrap'
 import { logout } from '../actions/userActions'
+// import { vendorLogoutAction } from '../actions/vendorAuthActions'
 
 const Header = () => {
   const dispatch = useDispatch()
@@ -51,17 +52,29 @@ const Header = () => {
                   <i className='fas fa-user-circle' /> Customer
                 </NavDropdown.ItemText>
                 <LinkContainer to='/login'>
-                <NavDropdown.Item >Sign In</NavDropdown.Item>
+                  <NavDropdown.Item >
+                    Sign In
+                  </NavDropdown.Item>
                 </LinkContainer>
                 <LinkContainer to='/register'>
-                <NavDropdown.Item>Sign Up</NavDropdown.Item>
+                  <NavDropdown.Item>
+                    Sign Up
+                  </NavDropdown.Item>
                 </LinkContainer>
                 <NavDropdown.Divider />
                 <NavDropdown.ItemText>
                   <i className='fas fa-user' /> Vendor
                 </NavDropdown.ItemText>
-                <NavDropdown.Item href='#action/3.3'>Sign In</NavDropdown.Item>
-                <NavDropdown.Item href='#action/3.2'>Register</NavDropdown.Item>
+                <LinkContainer to='/login/vendor'>
+                  <NavDropdown.Item>
+                    Sign In
+                  </NavDropdown.Item>
+                </LinkContainer>
+                <LinkContainer to='/register/vendor'>
+                  <NavDropdown.Item>
+                    Register
+                  </NavDropdown.Item>
+                </LinkContainer>
               </NavDropdown>
              )}
             </Nav>

@@ -7,6 +7,8 @@ import ProductScreen from './screens/ProductScreen'
 import CartScreen from './screens/CartScreen'
 import LoginScreen from './screens/LoginScreen'
 import RegisterScreen from './screens/RegisterScreen'
+import VendorLoginScreen from './screens/VendorLoginScreen'
+import VendorRegisterScreen from './screens/VendorRegisterScreen'
 import ProfileScreen from './screens/ProfileScreen'
 import VendorScreen from './screens/VendorScreen'
 
@@ -16,8 +18,10 @@ const App = () => {
       <Header />
       <main className='py-3'>
         <Container>
-        <Route path='/login' component={LoginScreen} />
-          <Route path='/register' component={RegisterScreen} />
+          <Route path='/login' component={LoginScreen} exact/>
+          <Route path='/register' component={RegisterScreen} exact/>
+          <Route path='/login/vendor' component={VendorLoginScreen} exact/>
+          <Route path='/register/vendor' component={VendorRegisterScreen} exact/>
           <Route path='/profile' component={ProfileScreen} />
           <Route path='/products/:id' component={ProductScreen} />
           <Route path='/cart/:id?' component={CartScreen} />

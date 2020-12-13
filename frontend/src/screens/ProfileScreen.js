@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Table, Form, Button, Row, Col } from 'react-bootstrap'
-import { LinkContainer } from 'react-router-bootstrap'
+// import { LinkContainer } from 'react-router-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
@@ -33,8 +33,8 @@ const ProfileScreen = ({ location, history }) => {
     if (!userInfo) {
       history.push('/login')
     } else {
-      if (!user?.name) {
-        // dispatch({ type: USER_UPDATE_PROFILE_RESET })
+      if (!user || !user.name || success) {
+        dispatch({ type: USER_UPDATE_PROFILE_RESET })
         dispatch(getUserDetails('profile'))
         // dispatch(listMyOrders())
       } else {
@@ -49,7 +49,7 @@ const ProfileScreen = ({ location, history }) => {
     if (password !== confirmPassword) {
       setMessage('Passwords do not match')
     } else {
-      dispatch(updateUserProfile({ id: user.user_id, name, email, password }))
+      dispatch(updateUserProfile({ name, password }))
     }
   }
 
@@ -80,6 +80,7 @@ const ProfileScreen = ({ location, history }) => {
               <Form.Label>Email Address</Form.Label>
               <Form.Control
                 type='email'
+                disabled
                 placeholder='Enter email'
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}

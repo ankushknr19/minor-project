@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken'
 import asyncHandler from 'express-async-handler'
+import pool from '../database/db.js'
 
 const verifyToken = asyncHandler(async (req, res, next) => {
   let jwtToken
@@ -13,7 +14,8 @@ const verifyToken = asyncHandler(async (req, res, next) => {
 
       const payload = jwt.verify(jwtToken, process.env.JWT_SECRET_KEY)
 
-      req.user = payload.id
+      req.user = await pool.query("SELECT * from users WHERE user_id=$1", [payload.id])
+      req.vendor = await pool.query("SELECT * from vendors WHERE user_id=$1", [payload.id])
 
       next()
     } catch (error) {
@@ -30,12 +32,29 @@ const verifyToken = asyncHandler(async (req, res, next) => {
 })
 
 const admin = (req, res, next) => {
-  if (req.user && req.user.is_admin) {
+  if (req.user && req.user.rows[0].is_admin) {
     next()
   } else {
     res.status(401)
-    throw new Error('Not authorized as an admin')
+    throw new Error('Not authorized as admin')
+  }
+}
+const vendor = (req, res, next) => {
+  if (req.user && req.user.rows[0].is_vendor) {
+    next()
+  } else {
+    res.status(401)
+    throw new Error('Not authorized as vendor')
   }
 }
 
-export { verifyToken, admin }
+const vendorOrAdmin = (req, res, next) => {
+  if (req.user && (req.user.rows[0].is_vendor || req.user.rows[0].is_admin)) {
+    next()
+  } else {
+    res.status(401)
+    throw new Error('Not authorized as admin or vendor')
+  }
+}
+
+export { verifyToken, admin, vendor, vendorOrAdmin }

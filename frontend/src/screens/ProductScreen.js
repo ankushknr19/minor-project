@@ -11,6 +11,9 @@ const ProductScreen = ({ match, history }) => {
 
   const dispatch = useDispatch()
 
+  const userLogin = useSelector((state) => state.userLogin)
+  const { userInfo } = userLogin
+
   const productDetails = useSelector(state => state.productDetails)
   const { loading, error, product } = productDetails
 
@@ -56,7 +59,7 @@ const ProductScreen = ({ match, history }) => {
               </ListGroup.Item>
             </ListGroup>
           </Col>
-          <Col md={3}>
+          <Col md={3} hidden = {userInfo?.is_vendor}>
             <Card>
               <ListGroup variant='flush'>
                 <ListGroup.Item>
@@ -105,7 +108,9 @@ const ProductScreen = ({ match, history }) => {
                 <ListGroup.Item>
                   <Button
                   onClick = {addToCartHandler}
-                  className='btn-block' type='button' disabled={product.count_in_stock === 0}>
+                  className='btn-block' type='button' 
+                  disabled={product.count_in_stock === 0 || userInfo?.is_vendor }
+                  >
                     Add to Cart
                   </Button>
                 </ListGroup.Item>

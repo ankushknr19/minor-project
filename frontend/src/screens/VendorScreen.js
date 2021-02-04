@@ -7,9 +7,20 @@ import { listVendorDetails} from '../actions/vendorActions'
 import { Col, Row } from 'react-bootstrap'
 import Product from '../components/Product'
 
-const VendorScreen = ({ match }) => {
+const VendorScreen = ({match, id}) => {
+  const dispatch = useDispatch()
+  
+  const userLogin = useSelector((state) => state.userLogin)
+  const { userInfo } = userLogin
+  
+  let vendor_id
+  if(userInfo?.is_vendor) {
+     vendor_id = id
+  } else{
+     vendor_id = match.params.id
+  }
 
-    const dispatch = useDispatch()
+
 
   const vendorDetails = useSelector(state => state.vendorDetails)
   const { loading, error, vendor } = vendorDetails
@@ -22,11 +33,10 @@ const VendorScreen = ({ match }) => {
         } = vendorProductList
 
     useEffect( () => {
-            dispatch(listVendorDetails(match.params.id))
-            dispatch(listVendorProducts(match.params.id))
-    },[dispatch,match])
-
-    console.log(products)
+            dispatch(listVendorDetails(vendor_id))
+            dispatch(listVendorProducts(vendor_id))
+    },[dispatch,vendor_id])
+    
     return (
         <>
           { loading
@@ -50,7 +60,7 @@ const VendorScreen = ({ match }) => {
           : <Row>
 
           {
-            products.map(product => (
+            products?.map(product => (
               <Col key={product.product_id} sm={12} md={6} lg={4} xl={3}>
                 <Product product = {product} />
               </Col>

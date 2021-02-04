@@ -12,7 +12,6 @@ export const userLogin = asyncHandler(async (req, res) => {
     const userDbResults = await pool.query('SELECT * FROM users WHERE is_vendor = false AND email=$1', [
         validateResult.email,
     ])
-        res.status(401).send('User Not Found')
     if (userDbResults.rows.length == 0) {
         res.status(401)
         throw new Error ('User Not Found')
@@ -31,6 +30,8 @@ export const userLogin = asyncHandler(async (req, res) => {
         user_id: userDbResults.rows[0].user_id,
         name: userDbResults.rows[0].name,
         email: userDbResults.rows[0].email,
+        is_admin: userDbResults.rows[0].is_admin,
+        is_vendor: userDbResults.rows[0].is_vendor,
         jwtToken,
     })
 })
@@ -62,6 +63,8 @@ export const vendorLogin = asyncHandler(async (req, res) => {
             vendor_id: userDbResults.rows[0].vendor_id,
             name: userDbResults.rows[0].name,
             email: userDbResults.rows[0].email,
+            is_admin: userDbResults.rows[0].is_admin,
+            is_vendor: userDbResults.rows[0].is_vendor,
             jwtToken,
         })
 })

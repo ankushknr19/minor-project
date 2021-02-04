@@ -7,11 +7,16 @@ import Loader from '../components/Loader'
 import { listProducts } from '../actions/productActions'
 import { listVendors } from '../actions/vendorActions'
 import Vendor from '../components/Vendor'
+import VendorScreen from './VendorScreen'
 // import axios from 'axios'
 
 const HomeScreen = () => {
 
   const dispatch = useDispatch()
+
+  
+  const userLogin = useSelector((state) => state.userLogin)
+  const { userInfo } = userLogin
 
   const productList = useSelector(state => state.productList)
   const { loading, error, products } = productList
@@ -26,6 +31,14 @@ const HomeScreen = () => {
 
   return (
     <>
+    {/* vendor home screen */}
+    <div>
+    { userInfo?.is_vendor && 
+      // <h1>Hello Vendor</h1>
+      <VendorScreen id= { `${userInfo?.vendor_id}` } />
+    }
+    </div>
+    <div hidden = {userInfo?.is_vendor}>
       <h1>Latest Products</h1>
       {loading
         ? (<Loader />)
@@ -43,7 +56,8 @@ const HomeScreen = () => {
                   </Col>
                 ))
             }
-            </Row>}
+            </Row>
+      }
             <h1>Shops</h1>
             {vendorListLoading
             ? (<Loader/>)
@@ -64,6 +78,7 @@ const HomeScreen = () => {
         }
             
 
+    </div>
     </>
   )
 }

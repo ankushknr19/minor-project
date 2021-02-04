@@ -18,7 +18,7 @@ import jwtGenerator from '../../utils/jwtGenerator.js'
         [req.user]
     )
     
-    if (searchDbResults.rows.length == 0) {
+    if (searchDbResults.rows[0].length == 0) {
         res.status(404)
         throw new Error('User not found')
     } else {

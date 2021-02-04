@@ -11,6 +11,9 @@ import VendorLoginScreen from './screens/VendorLoginScreen'
 import VendorRegisterScreen from './screens/VendorRegisterScreen'
 import ProfileScreen from './screens/ProfileScreen'
 import VendorScreen from './screens/VendorScreen'
+import ProductListScreen from './screens/ProductListScreen'
+import ProductEditScreen from './screens/ProductEditScreen'
+import ProductCreateScreen from './screens/ProductCreateScreen'
 
 const App = () => {
   return (
@@ -27,6 +30,10 @@ const App = () => {
           <Route path='/cart/:id?' component={CartScreen} />
           <Route path='/vendors/:id?' component={VendorScreen} />
           <Route path='/' component={HomeScreen} exact />
+          <Route path='/vendor/productlist' component={ProductListScreen} exact/>
+          <Route path='/vendor/productlist/:pageNumber' component={ProductListScreen} exact/>
+          <Route path='/vendor/product/:id/edit' component={ProductEditScreen} exact/>
+          <Route path='/vendor/addproduct' component={ProductCreateScreen} exact/>
         </Container>
       </main>
       <Footer />

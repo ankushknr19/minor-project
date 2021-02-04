@@ -10,7 +10,7 @@ const Vendor = ({vendor}) => {
                 <Card.Text as='h4'
                 style={{
                     width: '100px',
-                    height: '50px',
+                    height: '100px',
                     margin: '10px auto',
                     display: 'block'
                   }}

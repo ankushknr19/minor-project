@@ -1,10 +1,10 @@
 import React from 'react'
 // import { Route } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { LinkContainer } from 'react-router-bootstrap'
 import { Navbar, Nav, Container, NavDropdown } from 'react-bootstrap'
 import { logout } from '../actions/userActions'
-// import { vendorLogoutAction } from '../actions/vendorAuthActions'
 
 const Header = () => {
   const dispatch = useDispatch()
@@ -26,19 +26,15 @@ const Header = () => {
           <Navbar.Toggle aria-controls='basic-navbar-nav' />
           <Navbar.Collapse id='basic-navbar-nav'>
             <Nav className='ml-auto'>
-              <LinkContainer to='/wishlist'>
+
+              <LinkContainer to='/cart'  hidden = {userInfo?.is_vendor}>
                 <Nav.Link>
-                  <i className='fas fa-heart' /> Wishlist
-                </Nav.Link>
-              </LinkContainer>
-              <LinkContainer to='/cart'>
-                <Nav.Link>
-                  <i className='fas fa-shopping-cart' /> Cart
+                  <i className='fas fa-shopping-cart'/> Cart
                 </Nav.Link>
               </LinkContainer>
 
-              {userInfo ? (    
-                 <NavDropdown title={userInfo.name} id='username'>
+               {userInfo ? (    
+                 <NavDropdown title={userInfo.name} id='username'  hidden = {userInfo?.is_vendor}>
                  <LinkContainer to='/profile'>
                    <NavDropdown.Item>Profile</NavDropdown.Item>
                  </LinkContainer>
@@ -47,7 +43,7 @@ const Header = () => {
                  </NavDropdown.Item>
                </NavDropdown>
              ) : (
-              <NavDropdown title='Account' id='basic-nav-dropdown'>
+              <NavDropdown title='Account' id='basic-nav-dropdown'  hidden = {userInfo?.is_vendor}>
                 <NavDropdown.ItemText>
                   <i className='fas fa-user-circle' /> Customer
                 </NavDropdown.ItemText>
@@ -77,6 +73,25 @@ const Header = () => {
                 </LinkContainer>
               </NavDropdown>
              )}
+             
+
+             {/* vendor header */}
+             {userInfo && userInfo.is_vendor && (
+                <NavDropdown title={userInfo.name} id='vendor'>
+                  <LinkContainer to={`/vendor/productlist`}>
+                    <NavDropdown.Item>Dashboard</NavDropdown.Item>
+                  </LinkContainer>
+                 <LinkContainer to='/profile'>
+                   <NavDropdown.Item>Profile</NavDropdown.Item>
+                 </LinkContainer>
+                  {/* <LinkContainer to='/vendor/orderlist'>
+                    <NavDropdown.Item>Orders</NavDropdown.Item>
+                  </LinkContainer> */}
+                  <NavDropdown.Item onClick={logoutHandler}>
+                   Logout
+                 </NavDropdown.Item>
+                </NavDropdown>
+              )}
             </Nav>
           </Navbar.Collapse>
         </Container>

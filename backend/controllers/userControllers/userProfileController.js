@@ -2,9 +2,11 @@ import pool from '../../database/db.js'
 import asyncHandler from 'express-async-handler'
 
 export const userProfile = asyncHandler(async (req, res) => {
+    console.log(req.user)
+    console.log(req.user.rows[0].user_id)
     const userDbResults = await pool.query(
         'SELECT * FROM users WHERE user_id=$1',
-        [req.user]
+        [req.user.rows[0].user_id]
     )
     if (userDbResults.rows.length == 0) {
         res.status(400)

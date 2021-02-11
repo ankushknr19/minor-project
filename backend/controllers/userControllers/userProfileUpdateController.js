@@ -14,7 +14,7 @@ import jwtGenerator from '../../utils/jwtGenerator.js'
     )
     const hashedPassword = bcrypt.hashSync(validateResult.password, 10)
     const searchDbResults = await pool.query(
-        `SELECT * FROM users WHERE user_id=$1`,
+        `SELECT user_id, email FROM users WHERE user_id=$1`,
         [req.user]
     )
     
@@ -23,7 +23,7 @@ import jwtGenerator from '../../utils/jwtGenerator.js'
         throw new Error('User not found')
     } else {
         const dbResults = await pool.query(
-            'UPDATE users SET name=$1,password=$2 WHERE user_id=$3 RETURNING * ',
+            `UPDATE users SET name=$1,password=$2 WHERE user_id=$3 RETURNING * `,
             [
                 validateResult.name,
                 hashedPassword,

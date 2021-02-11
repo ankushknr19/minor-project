@@ -8,7 +8,6 @@ import { listProducts } from '../actions/productActions'
 import { listVendors } from '../actions/vendorActions'
 import Vendor from '../components/Vendor'
 import VendorScreen from './VendorScreen'
-// import axios from 'axios'
 
 const HomeScreen = () => {
 
@@ -34,7 +33,6 @@ const HomeScreen = () => {
     {/* vendor home screen */}
     <div>
     { userInfo?.is_vendor && 
-      // <h1>Hello Vendor</h1>
       <VendorScreen id= { `${userInfo?.vendor_id}` } />
     }
     </div>
@@ -48,8 +46,8 @@ const HomeScreen = () => {
             )
 
           : <Row>
-            {products.length === 0 && <Message variant='danger'>No product found</Message>}
-            {products.length > 0 &&
+            {products?.length === 0 && <Message variant='danger'>No product found</Message>}
+            {products?.length > 0 &&
                 products?.map(product => (
                   <Col key={product.product_id} sm={12} md={6} lg={4} xl={3}>
                     <Product product={product} />
@@ -66,7 +64,7 @@ const HomeScreen = () => {
         :(
           <Row>
           {
-            vendors.map(vendor => (
+            vendors?.map(vendor => (
               <Col key={vendor.vendor_id} sm={12} md={6} lg={4} xl={3}>
                 <Vendor vendor = {vendor} />
               </Col>

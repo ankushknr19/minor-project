@@ -1,4 +1,4 @@
-import axios from 'axios'
+// import axios from 'axios'
 import React, { useState, useEffect } from 'react'
 import { Form, Button } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
@@ -18,9 +18,13 @@ const ProductEditScreen = ({ match, history }) => {
   // const [category, setCategory] = useState('')
   const [countInStock, setCountInStock] = useState(0)
   const [description, setDescription] = useState('')
-  const [uploading, setUploading] = useState(false)
+  // const [uploading, setUploading] = useState(false)
 
   const dispatch = useDispatch()
+
+  
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
 
   const productDetails = useSelector((state) => state.productDetails)
   const { loading, error, product } = productDetails
@@ -33,6 +37,11 @@ const ProductEditScreen = ({ match, history }) => {
   } = productUpdate
 
   useEffect(() => {
+
+    if (!userInfo || !userInfo?.is_vendor) {
+      history.push('/login/vendor')
+    }
+
     if (successUpdate) {
       history.push('/vendor/productlist')
       dispatch({ type: PRODUCT_UPDATE_RESET })
@@ -47,13 +56,13 @@ const ProductEditScreen = ({ match, history }) => {
         setDescription(product.product_description)
       }
     }  
-  }, [dispatch, history, productId, product, successUpdate])
+  }, [dispatch, history, userInfo, productId, product, successUpdate])
 
   const submitHandler = (e) => {
     e.preventDefault()
     dispatch(
-      updateProduct({
-        product_id: productId,
+      updateProduct({ 
+        product_id : productId,
         name,
         price,
         image,
@@ -63,35 +72,33 @@ const ProductEditScreen = ({ match, history }) => {
     )
   }
 
-  const [errorUpload, setErrorUpload] = useState('');
+  // const [errorUpload, setErrorUpload] = useState('');
 
-  const userLogin = useSelector((state) => state.userLogin);
-  const { userInfo } = userLogin;
 
-  const uploadFileHandler = async (e) => {
-    const file = e.target.files[0]
-    const formData = new FormData()
-    formData.append('image', file)
-    setUploading(true)
+  // const uploadFileHandler = async (e) => {
+  //   const file = e.target.files[0]
+  //   const formData = new FormData()
+  //   formData.append('image', file)
+  //   setUploading(true)
 
-    try {
-      const config = {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          Authorization: `Bearer ${userInfo?.jwtToken}`,
-        },
-      }
+  //   try {
+  //     const config = {
+  //       headers: {
+  //         'Content-Type': 'multipart/form-data',
+  //         Authorization: `Bearer ${userInfo?.jwtToken}`,
+  //       },
+  //     }
 
-      const { data } = await axios.post('/api/upload', formData, config)
+  //     const { data } = await axios.post('/api/upload', formData, config)
 
-      setImage(data)
-      setUploading(false)
-    } catch (error) {
-      console.error(error)
-      setErrorUpload(error.message)
-      setUploading(false)
-    }
-  }
+  //     setImage(data)
+  //     setUploading(false)
+  //   } catch (error) {
+  //     console.error(error)
+  //     setErrorUpload(error.message)
+  //     setUploading(false)
+  //   }
+  // }
 
   return (
     <>
@@ -140,10 +147,10 @@ const ProductEditScreen = ({ match, history }) => {
                 custom
                 onChange={uploadFileHandler}
               ></Form.File> */}
-              {uploading && <Loader />}
+              {/* {uploading && <Loader />}
               {errorUpload && (
                 <Message variant="danger">{errorUpload}</Message>
-              )}
+              )} */}
             </Form.Group>
 
             {/* <Form.Group controlId='brand'>

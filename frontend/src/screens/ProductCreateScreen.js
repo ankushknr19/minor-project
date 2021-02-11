@@ -1,6 +1,4 @@
-import axios from 'axios'
 import React, { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
 import { Form, Button } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
@@ -22,12 +20,8 @@ const ProductCreateScreen = ({ match, history }) => {
 
   const dispatch = useDispatch()
 
-  
   const userLogin = useSelector((state) => state.userLogin)
   const { userInfo } = userLogin
-
-  // const productDetails = useSelector((state) => state.productDetails)
-  // const { loading, error, product } = productDetails
 
   const productCreate = useSelector((state) => state.productCreate)
   const {
@@ -37,52 +31,62 @@ const ProductCreateScreen = ({ match, history }) => {
   } = productCreate
 
   useEffect(() => {
+    dispatch({ type: PRODUCT_CREATE_RESET })
+
+    if (!userInfo || !userInfo?.is_vendor) {
+      history.push('/login/vendor')
+    }
+
     if (successCreate) {
       history.push('/vendor/productlist')
-      dispatch({ type: PRODUCT_CREATE_RESET })
+      window.alert("Product created successfully!")
     }
-  }, [dispatch, history, successCreate])
+  }, [dispatch, history, userInfo, successCreate])
 
   const submitHandler = (e) => {
     e.preventDefault()
     dispatch(
-      createProduct({
+      createProduct(
         name,
-        price,
         image,
         description,
-        count_in_stock,
-        vendor_id: userInfo?.vendor_id
-      })
+        price,
+        count_in_stock
+      )
     )
   }
 
-  const [errorUpload, setErrorUpload] = useState('');
-
-  const uploadFileHandler = async (e) => {
-    const file = e.target.files[0]
-    const formData = new FormData()
-    formData.append('image', file)
-    setUploading(true)
-
-    try {
-      const config = {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          Authorization: `Bearer ${userInfo?.jwtToken}`,
-        },
-      }
-
-      const { data } = await axios.post('/api/upload', formData, config)
-
-      setImage(data)
-      setUploading(false)
-    } catch (error) {
-      console.error(error)
-      setErrorUpload(error.message)
-      setUploading(false)
-    }
+  const discardHandler = (e) => {
+    dispatch({ type: PRODUCT_CREATE_RESET })
+    window.history.back()
   }
+  // const [errorUpload, setErrorUpload] = useState('');
+
+
+  // const uploadFileHandler = async (e) => {
+  //   const file = e.target.files[0]
+  //   const formData = new FormData()
+  //   formData.append('image', file)
+  //   setUploading(true)
+
+  //   try {
+  //     const config = {
+  //       headers: {
+  //         'Content-Type': 'multipart/form-data',
+  //         Authorization: `Bearer ${userInfo?.jwtToken}`,
+  //       },
+  //     }
+
+  //     const { data } = await axios.post('/api/upload', formData, config)
+
+  //     setImage(data)
+  //     setUploading(false)
+  //   } catch (error) {
+  //     console.error(error)
+  //     setErrorUpload(error.message)
+  //     setUploading(false)
+  //   }
+  // }
 
   return (
     <>
@@ -114,24 +118,27 @@ const ProductCreateScreen = ({ match, history }) => {
 
             <Form.Group controlId='image'>
               <Form.Label>Image</Form.Label>
-              {/* <Form.Control
+              <Form.Control
                 type='text'
                 placeholder='Enter image url'
                 value={image}
                 onChange={(e) => setImage(e.target.value)}
-              ></Form.Control> */}
-              <Form.File
+              ></Form.Control>
+              {/* <Form.File
                 id='image-file'
                 label='Choose File'
                 custom
                 onChange={uploadFileHandler}
-              ></Form.File>
-              {uploading && <Loader />}
+              ></Form.File> */}
+              {/* {uploading && <Loader />}
               {errorUpload && (
                 <Message variant="danger">{errorUpload}</Message>
-              )}
+              )} */}
             </Form.Group>
 
+            {/* <form action="/api/upload" method="post" enctype="multipart/form-data">
+                 <input type="file" name="image" />
+            </form> */}
             {/* <Form.Group controlId='brand'>
               <Form.Label>Brand</Form.Label>
               <Form.Control
@@ -167,6 +174,9 @@ const ProductCreateScreen = ({ match, history }) => {
             </Button>
           </Form>
         )}
+        <Button type='submit' variant='secondary' onClick={discardHandler}>
+              Cancel
+            </Button>
       </FormContainer>
     </>
   )

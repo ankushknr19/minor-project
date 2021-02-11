@@ -52,10 +52,29 @@ CREATE TABLE products
                 customer_id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
                 user_id uuid,
                 name VARCHAR(255)NOT NULL,
+                phone_number NUMERIC,
                 created_at TIMESTAMP
                 WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP ,
 	    FOREIGN KEY
                 (user_id) REFERENCES users
                 (user_id)
+
+);
+
+                CREATE TABLE customer_addresses
+                (
+                    address_id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+                    customer_id uuid,
+                    name VARCHAR(255) NOT NULL,
+                    phone_number NUMERIC NOT NULL,
+                    city VARCHAR(255) NOT NULL,
+                    area VARCHAR(255) NOT NULL,
+                    address VARCHAR(255) NOT NULL,
+                    is_default BOOLEAN DEFAULT TRUE,
+                    created_at TIMESTAMP
+                    WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP ,
+	    FOREIGN KEY
+                    (customer_id) REFERENCES customers
+                    (customer_id)
 
 );

@@ -22,7 +22,12 @@ const ProductScreen = ({ match, history }) => {
   }, [dispatch, match])
 
   const addToCartHandler = () => {
-    history.push(`/cart/${match.params.id}?qty=${qty}`)
+    if(!userInfo){
+      history.push(`/login?redirect=cart/${match.params.id}/qty=${qty}`)
+    }
+    else{
+      history.push(`/cart/${match.params.id}/qty=${qty}`)
+    }
   }
   console.log(qty);
 

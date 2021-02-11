@@ -63,7 +63,7 @@ const Header = () => {
                 </NavDropdown.ItemText>
                 <LinkContainer to='/login/vendor'>
                   <NavDropdown.Item>
-                    Sign In
+                    Login
                   </NavDropdown.Item>
                 </LinkContainer>
                 <LinkContainer to='/register/vendor'>

@@ -114,7 +114,7 @@ const addProduct = async (req, res) => {
         VALUES($1,$2,$3,$4,$5,$6) RETURNING * `,
         [
             req.body.name,
-            req.file,
+            req.body.image,
             req.body.description,
             req.body.price,
             req.body.count_in_stock,

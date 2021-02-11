@@ -114,7 +114,7 @@ export const deleteProduct = (id) => async (dispatch, getState) => {
     }
   }
 
-export const createProduct = (product) => async (dispatch, getState) => {
+export const createProduct = (name, image, description, price, count_in_stock) => async (dispatch, getState) => {
   try {
     dispatch({
       type: PRODUCT_CREATE_REQUEST,
@@ -130,7 +130,7 @@ export const createProduct = (product) => async (dispatch, getState) => {
       },
     }
 
-    const { data } = await axios.post(`/api/products`, {product}, config)
+    const { data } = await axios.post(`/api/products`, {name, image, description, price, count_in_stock}, config)
 
     dispatch({
       type: PRODUCT_CREATE_SUCCESS,
@@ -148,42 +148,42 @@ export const createProduct = (product) => async (dispatch, getState) => {
     }
   }
 
-export const updateProduct = (product) => async (dispatch, getState) => {
-  try {
-    dispatch({
-      type: PRODUCT_UPDATE_REQUEST,
-    })
-
-    const {
-      userLogin: { userInfo },
-    } = getState()
-
-    const config = {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${userInfo.jwtToken}`,
-      },
+  export const updateProduct = (product) => async (dispatch, getState) => {
+    try {
+      dispatch({
+        type: PRODUCT_UPDATE_REQUEST,
+      })
+  
+      const {
+        userLogin: { userInfo },
+      } = getState()
+  
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${userInfo.jwtToken}`,
+        },
+      }
+  
+      const { data } = await axios.put(
+        `/api/products/${product.product_id}`,
+        product,
+        config
+      )
+  
+      dispatch({
+        type: PRODUCT_UPDATE_SUCCESS,
+        payload: data,
+      })
+      dispatch({ type: PRODUCT_DETAILS_SUCCESS, payload: data })
+    } catch (error) {
+      const message =
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message
+      dispatch({
+        type: PRODUCT_UPDATE_FAIL,
+        payload: message,
+      })
+      }
     }
-
-    const { data } = await axios.put(
-      `/api/products/${product.product_id}`,
-      product,
-      config
-    )
-
-    dispatch({
-      type: PRODUCT_UPDATE_SUCCESS,
-      payload: data,
-    })
-    dispatch({ type: PRODUCT_DETAILS_SUCCESS, payload: data })
-  } catch (error) {
-    const message =
-      error.response && error.response.data.message
-        ? error.response.data.message
-        : error.message
-    dispatch({
-      type: PRODUCT_UPDATE_FAIL,
-      payload: message,
-    })
-    }
-  }

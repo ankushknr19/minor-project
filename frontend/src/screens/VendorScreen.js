@@ -4,7 +4,7 @@ import Message from '../components/Message'
 import Loader from '../components/Loader'
 import { listVendorProducts } from '../actions/productActions'
 import { listVendorDetails} from '../actions/vendorActions'
-import { Col, Row } from 'react-bootstrap'
+import { Col, Jumbotron, Row } from 'react-bootstrap'
 import Product from '../components/Product'
 
 const VendorScreen = ({match, id}) => {
@@ -44,12 +44,14 @@ const VendorScreen = ({match, id}) => {
             : error
             ? ( <Message variant='danger'>{error}</Message> )
             : ( <Row>
-                    <h1>{vendor.vendor_name} </h1>
+                    <Jumbotron style={{minWidth: '200px'}}>
+                        <h1>{vendor.vendor_name} </h1>
+                    </Jumbotron>
                 </Row>
               )
           }
 
-      <h2>Our Products</h2>
+      <h2>Products</h2>
       {vendorProductListLoading
         ? (<Loader />)
         : vendorProductListError

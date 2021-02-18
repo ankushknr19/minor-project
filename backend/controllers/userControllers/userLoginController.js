@@ -66,6 +66,9 @@ export const vendorLogin = asyncHandler(async (req, res) => {
             vendor_id: userDbResults.rows[0].vendor_id,
             name: userDbResults.rows[0].name,
             email: userDbResults.rows[0].email,
+            is_admin:  userDbResults.rows[0].is_admin,
+            is_vendor:  userDbResults.rows[0].is_vendor,
+            is_customer:  userDbResults.rows[0].is_customer,
             jwtToken,
         })
 })

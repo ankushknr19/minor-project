@@ -8,14 +8,14 @@ CREATE TABLE products
     product_description TEXT NOT NULL,
     product_price NUMERIC NOT NULL DEFAULT 0,
     count_in_stock NUMERIC NOT NULL DEFAULT 0,
+    vendor_id uuid,
     created_at TIMESTAMP
-    WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
-);
+    WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY
+    (vendor_id) REFERENCES vendors
+    (vendor_id)
 
-    insert into products
-        (product_name, product_image, product_description, product_price, count_in_stock)
-    VALUES
-        ('Airpods Wireless Bluetooth Headphones', '/images/airpods.jpg', 'Bluetooth technology lets you connect it with compatible devices wirelessly High-quality AAC audio offers immersive listening experience Built-in microphone allows you to take calls while working', '50000', '10');
+);
 
     --users table
     CREATE TABLE users
@@ -26,6 +26,7 @@ CREATE TABLE products
         password VARCHAR(255) NOT NULL,
         is_admin BOOLEAN DEFAULT FALSE,
         is_vendor BOOLEAN DEFAULT FALSE,
+        is_customer BOOLEAN DEFAULT FALSE,
         created_at TIMESTAMP
         WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP ,
     UNIQUE
@@ -37,7 +38,7 @@ CREATE TABLE products
         (
             vendor_id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
             user_id uuid,
-            name VARCHAR(255)NOT NULL,
+            vendor_name VARCHAR(255)NOT NULL,
             created_at TIMESTAMP
             WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP ,
 	        FOREIGN KEY
@@ -51,7 +52,7 @@ CREATE TABLE products
             (
                 customer_id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
                 user_id uuid,
-                name VARCHAR(255)NOT NULL,
+                customer_name VARCHAR(255)NOT NULL,
                 phone_number NUMERIC,
                 created_at TIMESTAMP
                 WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP ,
@@ -60,6 +61,8 @@ CREATE TABLE products
                 (user_id)
 
 );
+
+                -- customer address table
 
                 CREATE TABLE customer_addresses
                 (
@@ -73,8 +76,32 @@ CREATE TABLE products
                     is_default BOOLEAN DEFAULT TRUE,
                     created_at TIMESTAMP
                     WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP ,
-	    FOREIGN KEY
+	                FOREIGN KEY
                     (customer_id) REFERENCES customers
                     (customer_id)
+
+);
+
+                    -- cart table
+                    CREATE TABLE carts
+                    (
+                        cart_id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+                        customer_id uuid,
+                        product_id uuid,
+                        qty NUMERIC DEFAULT 1,
+                        FOREIGN KEY (customer_id) REFERENCES customers (customer_id),
+                        FOREIGN KEY (product_id) REFERENCES products (product_id)
+                    );
+
+                    -- order items table
+                    CREATE TABLE orders
+                    (
+                        order_id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+                        cart_id uuid
+                        created_at TIMESTAMP
+                        WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP ,
+	                    FOREIGN KEY
+                        (customer_id) REFERENCES customers
+                        (customer_id)
 
 );

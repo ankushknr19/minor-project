@@ -14,8 +14,7 @@ router.post('/register/vendor', vendorRegister)
 router
     .route('/profile')
     .get(verifyToken, userProfile)
-
-router.put('/profile/update',verifyToken, userProfileUpdate)
+    .put(verifyToken, userProfileUpdate)
 
 
 

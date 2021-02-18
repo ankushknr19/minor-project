@@ -2,7 +2,7 @@ import pool from '../../database/db.js'
 import asyncHandler from 'express-async-handler'
 
 // @desc    GET customer address
-// @route   GET /api/address
+// @route   GET /api/customer/address
 // @access  Private/customer
 
 export const customerAddress = asyncHandler(async (req, res) => {
@@ -15,17 +15,9 @@ export const customerAddress = asyncHandler(async (req, res) => {
         res.status(400)
         throw new Error('Customer address not found')
     } else {
-        res.status(200).json({
-            user_id: userDbResults.rows[0].user_id,
-            customer_id: userDbResults.rows[0].customer_id,
-            address_id: userDbResults.rows[0].address_id,
-            name: userDbResults.rows[0].name,
-            phone_number: userDbResults.rows[0].phone_number,
-            city: userDbResults.rows[0].city,
-            area: userDbResults.rows[0].area,
-            address: userDbResults.rows[0].address,
-            is_default: userDbResults.rows[0].is_default,
-        })
+        res.status(200).json(
+            userDbResults.rows[0]
+        )
     }
 })
 

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Row, Col } from 'react-bootstrap'
+import { Row, Col, CardDeck, CardGroup, CardColumns } from 'react-bootstrap'
 import Product from '../components/Product'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
@@ -46,6 +46,7 @@ const HomeScreen = () => {
             )
 
           : <Row>
+            
             {products?.length === 0 && <Message variant='danger'>No product found</Message>}
             {products?.length > 0 &&
                 products?.map(product => (
@@ -54,6 +55,7 @@ const HomeScreen = () => {
                   </Col>
                 ))
             }
+        
             </Row>
       }
             <h1>Shops</h1>
@@ -70,7 +72,6 @@ const HomeScreen = () => {
               </Col>
             ))
           }
-
         </Row>
         )
         }

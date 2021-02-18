@@ -2,8 +2,7 @@ import pool from '../../database/db.js'
 import asyncHandler from 'express-async-handler'
 
 export const userProfile = asyncHandler(async (req, res) => {
-    console.log(req.user)
-    console.log(req.user.rows[0].user_id)
+
     const userDbResults = await pool.query(
         'SELECT user_id, name, email, is_vendor, is_admin, is_customer FROM users WHERE user_id=$1',
         [req.user.rows[0].user_id]

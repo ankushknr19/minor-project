@@ -52,18 +52,24 @@ const ProductScreen = ({ match, history }) => {
                 <h3>{product.product_name}</h3>
               </ListGroup.Item>
               <ListGroup.Item>
-                   <Link to={`/vendors/${product.vendor_id}`}>
-                       <h4>{product.vendor_name}</h4>
-                   </Link>
-               </ListGroup.Item>
-              <ListGroup.Item>
                 <h4> Price: Rs {product.product_price} </h4>
               </ListGroup.Item>
               <ListGroup.Item>
                 Description: {product.product_description}
               </ListGroup.Item>
+              <ListGroup.Item>
+                      <h4> {product.vendor_name} </h4>
+                   <Link to={`/vendors/${product.vendor_id}`}>
+                   <Button variant="outline-dark" size="sm" type='button'>
+                   View Shop
+                  </Button>
+                   </Link>
+
+               </ListGroup.Item>
             </ListGroup>
           </Col>
+
+
           <Col md={3} hidden = {userInfo?.is_vendor}>
             <Card>
               <ListGroup variant='flush'>
@@ -118,6 +124,14 @@ const ProductScreen = ({ match, history }) => {
                   >
                     Add to Cart
                   </Button>
+                </ListGroup.Item>
+                <ListGroup.Item>
+                  <Row>
+                    <Col>
+                      Home delivery (2-5 days)
+                      Payment Option:  Khalti 
+                    </Col>
+                  </Row>
                 </ListGroup.Item>
               </ListGroup>
             </Card>

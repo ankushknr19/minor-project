@@ -58,7 +58,7 @@ const vendorProducts = async(req,res) => {
 
 // @desc    Delete a product
 // @route   DELETE /api/products/:id
-// @access  Private/admin
+// @access  Private/vendor
 const deleteProduct = asyncHandler(async (req, res) => {
     try {
         const product = await pool.query("SELECT * FROM products WHERE product_id=$1",[req.params.id])

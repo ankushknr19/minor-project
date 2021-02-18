@@ -15,11 +15,14 @@ const CartScreen = ({ match, location, history }) => {
   const cart = useSelector((state) => state.cart)
   const { cartItems } = cart
 
+  const userLogin = useSelector((state) => state.userLogin)
+  const { userInfo } = userLogin
+
   useEffect(() => {
     if (productId) {
-      dispatch(addToCart(productId, qty))
+      dispatch(addToCart(productId, qty, userInfo.customer_id))
     }
-  }, [dispatch, productId, qty])
+  }, [dispatch, productId, qty, userInfo.customer_id])
 
   const removeFromCartHandler = (id) => {
     dispatch(removeFromCart(id))
@@ -33,20 +36,24 @@ const CartScreen = ({ match, location, history }) => {
     <Row>
       <Col md={8}>
         <h1>Shopping Cart</h1>
-        {cartItems.length === 0 ? (
+        {!userInfo || cartItems.length === 0 ? (
           <Message>
             Your cart is empty <Link to='/'>Go Back</Link>
           </Message>
         ) : (
           <ListGroup variant='flush'>
             {cartItems.map((item) => (
+              userInfo?.customer_id === item.customer &&
               <ListGroup.Item key={item.product}>
                 <Row>
-                  <Col md={2}>
+                  <Col md={3}>
                     <Image src={item.image} alt={item.name} fluid rounded />
                   </Col>
                   <Col md={3}>
                     <Link to={`/products/${item.product}`}>{item.name}</Link>
+                    <br/>
+                    <br/>
+                    <Link to={`/vendors/${item.vendor}`}>{item.vendor_name}</Link>
                   </Col>
                   <Col md={2}>Rs {item.price}</Col>
                   <Col md={2}>
@@ -55,7 +62,7 @@ const CartScreen = ({ match, location, history }) => {
                       value={item.qty}
                       onChange={(e) =>
                         dispatch(
-                          addToCart(item.product, Number(e.target.value))
+                          addToCart(item.product, Number(e.target.value), item.customer)
                         )
                       }
                     >
@@ -87,7 +94,7 @@ const CartScreen = ({ match, location, history }) => {
         )}
       </Col>
       <Col md={4}>
-        <Card>
+        <Card hidden = {!userInfo}>
           <ListGroup variant='flush'>
             <ListGroup.Item>
               <h2>
@@ -98,16 +105,18 @@ const CartScreen = ({ match, location, history }) => {
                 .reduce((acc, item) => acc + item.qty * item.price, 0)
                 .toFixed(2)}
             </ListGroup.Item>
+
             <ListGroup.Item>
               <Button
                 type='button'
                 className='btn-block'
-                disabled={cartItems.length === 0}
+                disabled={!userInfo || cartItems.length === 0}
                 onClick={checkoutHandler}
               >
                 Proceed To Checkout
               </Button>
             </ListGroup.Item>
+          
           </ListGroup>
         </Card>
       </Col>

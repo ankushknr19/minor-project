@@ -1,7 +1,8 @@
-import { createStore, combineReducers, applyMiddleware } from 'redux'
+import { createStore, combineReducers, applyMiddleware, compose } from 'redux'
 import thunk from 'redux-thunk'
-import { composeWithDevTools } from 'redux-devtools-extension'
 import { vendorDetailsReducer, vendorListReducer } from './reducers/vendorReducers'
+import { persistReducer } from 'redux-persist'
+import storage from 'redux-persist/lib/storage'
 import {
   productListReducer,
   productDetailsReducer,
@@ -20,8 +21,9 @@ import {
   userDeleteReducer,
   userUpdateReducer,
 } from './reducers/userReducers'
+import { customerAddressReducer, cartListReducer, cartItemDeleteReducer } from './reducers/customerReducers'
 
-const reducer = combineReducers({
+const reduce = {
   userLogin: userLoginReducer,
   userRegister: userRegisterReducer,
   vendorList: vendorListReducer,
@@ -38,18 +40,31 @@ const reducer = combineReducers({
   userList: userListReducer,
   userDelete: userDeleteReducer,
   userUpdate: userUpdateReducer,
-})
-
-const cartItemsFromStorage = localStorage.getItem('cartItems')
-  ? JSON.parse(localStorage.getItem('cartItems'))
-  : []
-
-const initialState = {
-  cart: { cartItems: cartItemsFromStorage }
+  customerAddress: customerAddressReducer,
+  cartList: cartListReducer,
+  cartItemDelete: cartItemDeleteReducer
 }
+
+const reducer = combineReducers(reduce)
+
+// const cartItemsFromStorage = localStorage.getItem('cartItems')
+//   ? JSON.parse(localStorage.getItem('cartItems'))
+//   : []
+
+// const initialState = {
+//   cart: { cartItems: cartItemsFromStorage }
+// }
 
 const middleware = [thunk]
 
-const store = createStore(reducer, initialState, composeWithDevTools(applyMiddleware(...middleware)))
+const composeEnhances = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
+
+const persistConfig = {
+  key: 'root',
+  storage: storage,
+  whitelist: Object.keys(reduce)
+};
+
+const store = createStore(persistReducer(persistConfig, reducer), composeEnhances(applyMiddleware(...middleware)))
 
 export default store

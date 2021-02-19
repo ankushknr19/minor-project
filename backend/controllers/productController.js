@@ -141,7 +141,7 @@ const updateProduct = asyncHandler(async (req, res) => {
             throw new Error('Product not found')
         } else {
             
-            const updatedProduct = await pool.query("UPDATE TABLE products SET product_name=$1, product_image=$2, product_description=$3, product_price=$4, count_in_stock=$5 WHERE product_id=$6",
+            const updatedProduct = await pool.query("UPDATE products SET product_name=$1, product_image=$2, product_description=$3, product_price=$4, count_in_stock=$5 WHERE product_id=$6",
             [
                 req.body.name,
                 req.body.image,

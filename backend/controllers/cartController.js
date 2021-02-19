@@ -46,6 +46,9 @@ export const deleteCartItem = asyncHandler(async (req, res) => {
 // @access  Private/customer
 export const addCartItem = async (req, res) => {
     try {
+        const searchDb = await pool.query("SELECT * FROM carts WHERE product_id=$1",[req.body.product_id])
+
+        if (searchDb.rows.length==0) {
             const newCartItem = await pool.query(` INSERT INTO carts (customer_id, product_id, qty )
             VALUES($1,$2,$3) RETURNING * `,
             [
@@ -54,6 +57,18 @@ export const addCartItem = async (req, res) => {
                 req.body.qty
             ])
             res.status(201).json(newCartItem.rows)
+        } 
+        else {
+            
+            const updatedCartItem = await pool.query(`UPDATE carts SET qty=$1 WHERE product_id=$2 RETURNING *`,
+            [
+                req.body.qty,
+                req.body.product_id
+            ])
+
+            res.status(201).json(updatedCartItem.rows)
+        }
+            
     }
      catch (error) {
         console.error(error.message)
@@ -76,7 +91,7 @@ export const updateCartItem = asyncHandler(async (req, res) => {
         } 
         else {
             
-            const updatedCartItem = await pool.query("UPDATE TABLE carts SET qty=$1 WHERE cart_id=$2 ",
+            const updatedCartItem = await pool.query(`UPDATE carts SET qty=$1 WHERE cart_id=$2 RETURNING *`,
             [
                 req.body.qty,
                 req.params.id

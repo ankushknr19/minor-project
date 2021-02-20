@@ -3,29 +3,50 @@ import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { Row, Col, ListGroup, Image, Form, Button, Card } from 'react-bootstrap'
 import Message from '../components/Message'
-import { addToCart, removeFromCart } from '../actions/cartActions'
+import { deleteCartItem, getCart, updateCartItem } from '../actions/cartActions'
+import { CART_ITEM_ADD_RESET } from '../constants/cartConstants'
 
 const CartScreen = ({ match, location, history }) => {
-  const productId = match.params.id
-
-  const qty = location.search ? Number(location.search.split('=')[1]) : 1
 
   const dispatch = useDispatch()
 
-  const cart = useSelector((state) => state.cart)
-  const { cartItems } = cart
+  const cartList = useSelector((state) => state.cartList)
+  const { cartItems } = cartList
+
+  const cartItemDelete = useSelector((state) => state.cartItemDelete)
+  const {
+    loading: loadingDelete,
+    error: errorDelete,
+    success: successDelete,
+  } = cartItemDelete
+
+  const cartItemUpdate = useSelector((state) => state.cartItemUpdate)
+  const {
+    loading: loadingUpdate,
+    error: errorUpdate,
+    success: successUpdate,
+  } = cartItemUpdate
 
   const userLogin = useSelector((state) => state.userLogin)
   const { userInfo } = userLogin
 
   useEffect(() => {
-    if (productId) {
-      dispatch(addToCart(productId, qty, userInfo.customer_id))
+    dispatch({type:CART_ITEM_ADD_RESET})
+
+        if (!userInfo || !userInfo?.is_customer) {
+      history.push('/login?redirect=cart')
+      dispatch(getCart())
+    }else{
+      dispatch(getCart())
     }
-  }, [dispatch, productId, qty, userInfo.customer_id])
+  }, [dispatch, history, userInfo, successDelete,successUpdate])
 
   const removeFromCartHandler = (id) => {
-    dispatch(removeFromCart(id))
+    dispatch(deleteCartItem(id))
+  }
+
+  const updateCartItemHandler = (id, qty) => {
+    dispatch(updateCartItem(id, qty))
   }
 
   const checkoutHandler = () => {
@@ -36,43 +57,43 @@ const CartScreen = ({ match, location, history }) => {
     <Row>
       <Col md={8}>
         <h1>Shopping Cart</h1>
-        {!userInfo || cartItems.length === 0 ? (
+        {cartItems?.length === 0 ? (
           <Message>
-            Your cart is empty <Link to='/'>Go Back</Link>
+            Your cart is empty! <Link to='/'> Shop now! </Link>
           </Message>
         ) : (
           <ListGroup variant='flush'>
-            {cartItems.map((item) => (
-              userInfo?.customer_id === item.customer &&
-              <ListGroup.Item key={item.product}>
+            {cartItems?.map((cartItem) => (
+              userInfo?.customer_id === cartItem.customer_id &&
+              <ListGroup.Item key={cartItem.product_id}>
                 <Row>
                   <Col md={3}>
-                    <Image src={item.image} alt={item.name} fluid rounded />
+                      <Link to={`/products/${cartItem.product_id}`}>
+                          <Image src={cartItem.product_image} alt={cartItem.product_name} fluid rounded />
+                      </Link>
                   </Col>
                   <Col md={3}>
-                    <Link to={`/products/${item.product}`}>{item.name}</Link>
+                    <Link to={`/products/${cartItem.product_id}`}>{cartItem.product_name}</Link>
                     <br/>
                     <br/>
-                    <Link to={`/vendors/${item.vendor}`}>{item.vendor_name}</Link>
+                    <Link to={`/vendors/${cartItem.vendor_id}`}>{cartItem.vendor_name}</Link>
                   </Col>
-                  <Col md={2}>Rs {item.price}</Col>
+                  <Col md={2}>Rs {cartItem.product_price}</Col>
                   <Col md={2}>
+                    Qty: {cartItem.qty}
                     <Form.Control
                       as='select'
-                      value={item.qty}
+                      value={cartItem.qty}
                       onChange={(e) =>
-                        dispatch(
-                          addToCart(item.product, Number(e.target.value), item.customer)
-                        )
+                          updateCartItemHandler(cartItem.cart_id, Number(e.target.value))
                       }
                     >
-                      
                       {
-                              Array.from({length: item.count_in_stock}, (v,i) => i).map(
-                                (x) => (
-                                  <option key={x + 1} value={x + 1}>
-                                    {x + 1}
-                                  </option>
+                        Array.from({length: cartItem.count_in_stock}, (v,i) => i).map(
+                            (x) => (
+                                <option key={x + 1} value={x + 1}>
+                                   {x + 1}
+                                </option>
                                 )
                               )
                             }
@@ -82,7 +103,7 @@ const CartScreen = ({ match, location, history }) => {
                     <Button
                       type='button'
                       variant='light'
-                      onClick={() => removeFromCartHandler(item.product)}
+                      onClick={() => removeFromCartHandler(cartItem.cart_id)}
                     >
                       <i className='fas fa-trash'></i>
                     </Button>
@@ -94,23 +115,28 @@ const CartScreen = ({ match, location, history }) => {
         )}
       </Col>
       <Col md={4}>
-        <Card hidden = {!userInfo}>
+        <Card >
           <ListGroup variant='flush'>
             <ListGroup.Item>
               <h2>
-                Subtotal ({cartItems.reduce((acc, item) => acc + item.qty, 0)})
+                Subtotal ({cartItems?.reduce((acc, cartItem) => acc + cartItem.qty, 0)})
                 items
               </h2>
+                
+              </ListGroup.Item>
+              <ListGroup.Item>
+              <h2>
               Rs {cartItems
-                .reduce((acc, item) => acc + item.qty * item.price, 0)
-                .toFixed(2)}
+                ?.reduce((acc, cartItem) => acc + cartItem.qty * cartItem.product_price, 0)
+                ?.toFixed(2)}
+               </h2> 
             </ListGroup.Item>
 
             <ListGroup.Item>
               <Button
                 type='button'
                 className='btn-block'
-                disabled={!userInfo || cartItems.length === 0}
+                disabled={cartItems?.length === 0}
                 onClick={checkoutHandler}
               >
                 Proceed To Checkout

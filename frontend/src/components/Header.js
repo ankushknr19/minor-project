@@ -1,9 +1,9 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 // import { Route } from 'react-router-dom'
 import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { LinkContainer } from 'react-router-bootstrap'
-import { Navbar, Nav, Container, NavDropdown } from 'react-bootstrap'
+import { Navbar, Nav, Container, NavDropdown, Badge } from 'react-bootstrap'
 import { logout } from '../actions/userActions'
 
 const Header = () => {
@@ -12,6 +12,15 @@ const Header = () => {
   const userLogin = useSelector((state) => state.userLogin)
   const { userInfo } = userLogin
 
+  const cartList = useSelector((state) => state.cartList)
+  const { cartItems } = cartList
+
+  const newCartItem = useSelector(state => state.newCartItem)
+  const { success: addCartSuccess } = newCartItem
+
+useEffect(()=>{
+  console.log(cartItems?.length)
+})
   const logoutHandler = () => {
     dispatch(logout())
   }
@@ -29,7 +38,12 @@ const Header = () => {
 
               <LinkContainer to='/cart'  hidden = {userInfo?.is_vendor}>
                 <Nav.Link>
-                  <i className='fas fa-shopping-cart'/> Cart
+                  <i className='fas fa-shopping-cart'/> 
+                  Cart
+                  { cartItems?.length >0 &&
+                    <span>({cartItems?.length}) </span>
+                  }
+                  <Badge variant="secondary" hidden = {!addCartSuccess} > New </Badge>
                 </Nav.Link>
               </LinkContainer>
 

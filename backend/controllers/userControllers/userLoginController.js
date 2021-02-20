@@ -24,7 +24,7 @@ export const customerLogin = asyncHandler(async (req, res) => {
     )
     if (!decryptedPassword) {
         res.status(401)
-        throw new Error ('Passwords do not match')
+        throw new Error ('Incorrect password. Please try again.')
     }
     const jwtToken = jwtGenerator(userDbResults.rows[0].user_id)
         res.status(200).json({
@@ -33,6 +33,9 @@ export const customerLogin = asyncHandler(async (req, res) => {
             customer_id: userDbResults.rows[0].customer_id,
             name: userDbResults.rows[0].name,
             email: userDbResults.rows[0].email,
+            is_customer: userDbResults.rows[0].is_customer,
+            is_admin:  userDbResults.rows[0].is_admin,
+            is_vendor:  userDbResults.rows[0].is_vendor,
             jwtToken,
         })
 })

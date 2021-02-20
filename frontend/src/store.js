@@ -11,7 +11,6 @@ import {
   productCreateReducer,
   productUpdateReducer,
 } from './reducers/productReducers'
-import { cartReducer } from './reducers/cartReducers'
 import {
   userLoginReducer,
   userRegisterReducer,
@@ -21,7 +20,18 @@ import {
   userDeleteReducer,
   userUpdateReducer,
 } from './reducers/userReducers'
-import { customerAddressReducer, cartListReducer, cartItemDeleteReducer } from './reducers/customerReducers'
+import { 
+  customerAddressReducer, 
+} from './reducers/customerReducers'
+import {  
+  cartListReducer, 
+  cartItemDeleteReducer, 
+  cartItemAddReducer, 
+  cartItemUpdateReducer, 
+} from './reducers/cartReducers'
+
+
+
 
 const reduce = {
   userLogin: userLoginReducer,
@@ -34,7 +44,6 @@ const reduce = {
   productDelete: productDeleteReducer,
   productCreate: productCreateReducer,
   productUpdate: productUpdateReducer,
-  cart: cartReducer,
   userDetails: userDetailsReducer,
   userUpdateProfile: userUpdateProfileReducer,
   userList: userListReducer,
@@ -42,7 +51,9 @@ const reduce = {
   userUpdate: userUpdateReducer,
   customerAddress: customerAddressReducer,
   cartList: cartListReducer,
-  cartItemDelete: cartItemDeleteReducer
+  cartItemDelete: cartItemDeleteReducer,
+  newCartItem: cartItemAddReducer,
+  cartItemUpdate: cartItemUpdateReducer,
 }
 
 const reducer = combineReducers(reduce)

@@ -46,6 +46,9 @@ export const customerRegister = asyncHandler(async (req, res) => {
             name: newUser.rows[0].name,
             email: newUser.rows[0].email,
             jwtToken,
+            is_admin:  newUser.rows[0].is_admin,
+            is_vendor:  newUser.rows[0].is_vendor,
+            is_customer:  newUser.rows[0].is_customer,
         })
     } else {
         res.status(401)
@@ -96,6 +99,9 @@ export const vendorRegister = asyncHandler(async (req, res) => {
             name: newUser.rows[0].name,
             email: newUser.rows[0].email,
             jwtToken,
+            is_admin:  newUser.rows[0].is_admin,
+            is_vendor:  newUser.rows[0].is_vendor,
+            is_customer:  newUser.rows[0].is_customer,
         })
     } else {
         res.status(401)

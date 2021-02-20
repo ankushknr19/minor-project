@@ -5,6 +5,7 @@ import Message from '../components/Message'
 import Loader from '../components/Loader'
 import { listProductDetails } from '../actions/productActions'
 import { Row, Col, Image, ListGroup, Card, Button, Form } from 'react-bootstrap'
+import { addCartItem } from '../actions/cartActions'
 
 const ProductScreen = ({ match, history }) => {
   const [qty, setQty] = useState(1)
@@ -17,19 +18,22 @@ const ProductScreen = ({ match, history }) => {
   const productDetails = useSelector(state => state.productDetails)
   const { loading, error, product } = productDetails
 
+  const newCartItem = useSelector(state => state.newCartItem)
+  const { success: addCartSuccess } = newCartItem
+
   useEffect(() => {
     dispatch(listProductDetails(match.params.id))
   }, [dispatch, match])
 
   const addToCartHandler = () => {
     if(!userInfo){
-      history.push(`/login?redirect=cart/${match.params.id}/qty=${qty}`)
+      history.push(`/login?redirect=products/${product.product_id}`)
     }
     else{
-      history.push(`/cart/${match.params.id}/qty=${qty}`)
+      dispatch(addCartItem(product.product_id, qty))
     }
   }
-  console.log(qty);
+
 
   return (
     <>
@@ -64,7 +68,6 @@ const ProductScreen = ({ match, history }) => {
                    View Shop
                   </Button>
                    </Link>
-
                </ListGroup.Item>
             </ListGroup>
           </Col>
@@ -93,7 +96,7 @@ const ProductScreen = ({ match, history }) => {
                 {product.count_in_stock > 0 && (
                     <ListGroup.Item>
                       <Row>
-                        <Col>Qty</Col>
+                        <Col>Quantity: </Col>
                         <Col>
                           <Form.Control
                             as='select'
@@ -116,7 +119,7 @@ const ProductScreen = ({ match, history }) => {
                     </ListGroup.Item>
                   )}
 
-                <ListGroup.Item>
+                <ListGroup.Item hidden = {addCartSuccess}>
                   <Button
                   onClick = {addToCartHandler}
                   className='btn-block' type='button' 
@@ -124,6 +127,15 @@ const ProductScreen = ({ match, history }) => {
                   >
                     Add to Cart
                   </Button>
+                </ListGroup.Item>
+                <ListGroup.Item 
+                  hidden = {!addCartSuccess || !userInfo}
+                >
+                <Link to={'/cart'}>
+                   <Button className='btn-block' variant="outline-dark" type='button'>
+                   Go to Cart
+                  </Button>
+                   </Link>
                 </ListGroup.Item>
                 <ListGroup.Item>
                   <Row>

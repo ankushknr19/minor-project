@@ -8,6 +8,7 @@ import { listProducts } from '../actions/productActions'
 import { listVendors } from '../actions/vendorActions'
 import Vendor from '../components/Vendor'
 import VendorScreen from './VendorScreen'
+import { getCart } from '../actions/cartActions'
 
 const HomeScreen = () => {
 
@@ -24,6 +25,7 @@ const HomeScreen = () => {
   const { loading: vendorListLoading , error: vendorListError, vendors } = vendorList
 
   useEffect(() => {
+    dispatch(getCart())
     dispatch(listProducts())
     dispatch(listVendors())
   }, [dispatch])

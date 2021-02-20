@@ -1,36 +1,70 @@
 import {
-  CART_ADD_ITEM,
-  CART_REMOVE_ITEM
+  CART_LIST_REQUEST,
+  CART_LIST_SUCCESS,
+  CART_LIST_FAIL,
+  CART_ITEM_DELETE_REQUEST,
+  CART_ITEM_DELETE_SUCCESS,
+  CART_ITEM_DELETE_FAIL,
+  CART_ITEM_ADD_REQUEST,
+  CART_ITEM_ADD_SUCCESS,
+  CART_ITEM_ADD_FAIL,
+  CART_ITEM_UPDATE_REQUEST,
+  CART_ITEM_UPDATE_SUCCESS,
+  CART_ITEM_UPDATE_FAIL,
+  CART_ITEM_ADD_RESET,
 } from '../constants/cartConstants'
 
-export const cartReducer = (
-  state = { cartItems: [],},
-  action
-) => {
+
+
+export const cartListReducer = (state = { cartItems: [] }, action) => {
   switch (action.type) {
-    case CART_ADD_ITEM:
-      const item = action.payload
+    case CART_LIST_REQUEST:
+      return { loading: true, cartItems: [] }
+    case CART_LIST_SUCCESS:
+      return { loading: false, cartItems: action.payload }
+    case CART_LIST_FAIL:
+      return { loading: false, error: action.payload }
+    default:
+      return state
+  }
+}
 
-      const existItem = state.cartItems.find((x) => x.product === item.product)
+export const cartItemDeleteReducer = (state = {}, action) => {
+  switch (action.type) {
+    case CART_ITEM_DELETE_REQUEST:
+      return { loading: true }
+    case CART_ITEM_DELETE_SUCCESS:
+      return { loading: false, success: true }
+    case CART_ITEM_DELETE_FAIL:
+      return { loading: false, error: action.payload }
+    default:
+      return state
+  }
+}
 
-      if (existItem) {
-        return {
-          ...state,
-          cartItems: state.cartItems.map((x) =>
-            x.product === existItem.product ? item : x
-          )
-        }
-      } else {
-        return {
-          ...state,
-          cartItems: [...state.cartItems, item]
-        }
-      }
-    case CART_REMOVE_ITEM:
-      return {
-        ...state,
-        cartItems: state.cartItems.filter((x) => x.product !== action.payload)
-      }
+export const cartItemAddReducer = (state = { newCartItem: {} }, action) => {
+  switch (action.type) {
+    case CART_ITEM_ADD_REQUEST:
+      return { loading: true }
+    case CART_ITEM_ADD_SUCCESS:
+      return { loading: false, success: true, newCartItem: action.payload }
+    case CART_ITEM_ADD_FAIL:
+      return { loading: false, error: action.payload }
+    case CART_ITEM_ADD_RESET:
+      return { newCartItem: {} }
+    default:
+      return state
+  }
+}
+
+export const cartItemUpdateReducer = (state = { }, action) => {
+  switch (action.type) {
+    case CART_ITEM_UPDATE_REQUEST:
+      return { loading: true }
+    case CART_ITEM_UPDATE_SUCCESS:
+      return { loading: false, success: true}
+    case CART_ITEM_UPDATE_FAIL:
+      return { loading: false, error: action.payload }
     default:
       return state
   }

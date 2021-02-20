@@ -6,7 +6,7 @@ import asyncHandler from 'express-async-handler'
 // @access  Private/customer
 export const cart = asyncHandler(async (req, res) => {
     try {
-        const getCart = await pool.query("SELECT carts.*, products.* FROM carts JOIN products ON carts.product_id = products.product_id WHERE customer_id=$1",[req.customer.rows[0].customer_id])   
+        const getCart = await pool.query("SELECT carts.*, products.*, vendors.vendor_name FROM carts JOIN products ON carts.product_id = products.product_id INNER JOIN vendors on products.vendor_id=vendors.vendor_id WHERE customer_id=$1",[req.customer.rows[0].customer_id])   
         if (getCart.rows[0]==0) {
             res.status(404)
             throw new Error('Cart is empty')

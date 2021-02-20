@@ -15,7 +15,6 @@ import VendorScreen from './screens/VendorScreen'
 import ProductListScreen from './screens/ProductListScreen'
 import ProductEditScreen from './screens/ProductEditScreen'
 import ProductCreateScreen from './screens/ProductCreateScreen'
-import CartScreenNew from './screens/CartScreenNew'
 
 const App = () => {
   return (
@@ -31,7 +30,6 @@ const App = () => {
           <Route path='/profile/update' component={ProfileUpdateScreen} exact/>
           <Route path='/products/:id' component={ProductScreen} />
           <Route path='/cart/:id?' component={CartScreen} />
-          <Route path='/cartnew' component={CartScreenNew} exact/>
           <Route path='/vendors/:id?' component={VendorScreen} />
           <Route path='/' component={HomeScreen} exact />
           <Route path='/vendor/productlist' component={ProductListScreen} exact/>

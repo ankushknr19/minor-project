@@ -75,6 +75,7 @@ const ProductListScreen = ({ history, match }) => {
                 <th>IMAGE</th>
                 <th>NAME</th>
                 <th>PRICE</th>
+                <th>Category</th>
                 <th>Description</th>
                 <th>Stock</th>
                 <th></th>
@@ -90,6 +91,7 @@ const ProductListScreen = ({ history, match }) => {
                   }}/></td>
                   <td>{product.product_name}</td>
                   <td>Rs{product.product_price}</td>
+                  <td>{product.category}</td>
                   <td style={{
                     width: '230px'
                   }}>{product.product_description}</td>

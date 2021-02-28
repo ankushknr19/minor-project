@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Row, Col } from 'react-bootstrap'
+import { Row, Col, Button, Jumbotron } from 'react-bootstrap'
 import Product from '../components/Product'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
@@ -11,6 +11,7 @@ import VendorScreen from './VendorScreen'
 import { getCart } from '../actions/cartActions'
 import { getCustomerOrderList } from '../actions/orderActions'
 import {VENDOR_DETAILS_RESET} from '../constants/vendorConstants'
+import { LinkContainer } from 'react-router-bootstrap'
 
 const HomeScreen = () => {
 
@@ -44,8 +45,26 @@ const HomeScreen = () => {
       <VendorScreen id= { `${userInfo?.vendor_id}` } />
     }
     </div>
+
+
     <div hidden = {userInfo?.is_vendor}>
-      <h1>Latest Products</h1>
+
+    {/* <h1> Product Categories </h1> */}
+    <Row>
+      <Col>
+      <LinkContainer to='/productscategory/male'>
+          <Jumbotron style={{minWidth: '200px'}}> <center> <h1> Male </h1></center> </Jumbotron>
+      </LinkContainer>
+      </Col>
+      <Col>
+      <LinkContainer to='/productscategory/female'>
+      <Jumbotron style={{minWidth: '200px'}}> <center> <h1> Female </h1></center> </Jumbotron>
+      </LinkContainer>
+      </Col>
+      </Row>
+
+
+      <center><h1>Latest Products</h1></center>
       {loading
         ? (<Loader />)
         : error
@@ -66,7 +85,7 @@ const HomeScreen = () => {
         
             </Row>
       }
-            <h1>Shops</h1>
+            <Jumbotron style={{minWidth: '200px', height:'100px'}}> <center> <h1> Shops </h1></center> </Jumbotron>
             {vendorListLoading
             ? (<Loader/>)
           : vendorListError

@@ -56,6 +56,7 @@ CREATE TABLE users
                 product_description TEXT NOT NULL,
                 product_price NUMERIC NOT NULL DEFAULT 0,
                 count_in_stock NUMERIC NOT NULL DEFAULT 0,
+                category VARCHAR,
                 vendor_id uuid,
                 created_at TIMESTAMP
                 WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,

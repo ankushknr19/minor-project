@@ -15,7 +15,7 @@ const ProductEditScreen = ({ match, history }) => {
   const [price, setPrice] = useState(0)
   const [image, setImage] = useState('')
   // const [brand, setBrand] = useState('')
-  // const [category, setCategory] = useState('')
+  const [category, setCategory] = useState('male')
   const [countInStock, setCountInStock] = useState(0)
   const [description, setDescription] = useState('')
   // const [uploading, setUploading] = useState(false)
@@ -54,6 +54,7 @@ const ProductEditScreen = ({ match, history }) => {
         setImage(product.product_image)
         setCountInStock(product.count_in_stock)
         setDescription(product.product_description)
+        setCategory(product.category)
       }
     }  
   }, [dispatch, history, userInfo, productId, product, successUpdate])
@@ -68,37 +69,11 @@ const ProductEditScreen = ({ match, history }) => {
         image,
         description,
         countInStock,
+        category
       })
     )
   }
 
-  // const [errorUpload, setErrorUpload] = useState('');
-
-
-  // const uploadFileHandler = async (e) => {
-  //   const file = e.target.files[0]
-  //   const formData = new FormData()
-  //   formData.append('image', file)
-  //   setUploading(true)
-
-  //   try {
-  //     const config = {
-  //       headers: {
-  //         'Content-Type': 'multipart/form-data',
-  //         Authorization: `Bearer ${userInfo?.jwtToken}`,
-  //       },
-  //     }
-
-  //     const { data } = await axios.post('/api/upload', formData, config)
-
-  //     setImage(data)
-  //     setUploading(false)
-  //   } catch (error) {
-  //     console.error(error)
-  //     setErrorUpload(error.message)
-  //     setUploading(false)
-  //   }
-  // }
 
   return (
     <>
@@ -140,28 +115,20 @@ const ProductEditScreen = ({ match, history }) => {
                 value={image}
                 onChange={(e) => setImage(e.target.value)}
               ></Form.Control>
-              {/* <Form.File
-                id='image-file'
-                label='Choose File'
-                enctype="multipart/form-data"
-                custom
-                onChange={uploadFileHandler}
-              ></Form.File> */}
-              {/* {uploading && <Loader />}
-              {errorUpload && (
-                <Message variant="danger">{errorUpload}</Message>
-              )} */}
             </Form.Group>
 
-            {/* <Form.Group controlId='brand'>
-              <Form.Label>Brand</Form.Label>
-              <Form.Control
-                type='text'
-                placeholder='Enter brand'
-                value={brand}
-                onChange={(e) => setBrand(e.target.value)}
-              ></Form.Control>
-            </Form.Group> */}
+            <Form.Group controlId='category'>
+              <Form.Label>Category</Form.Label>
+                  <Form.Control 
+                  as="select" 
+                  value={category}
+                  onChange={(e) => setCategory(e.target.value)}
+                  >
+                      <option>male</option>
+                      <option>female</option>
+                      <option>unisex</option>
+                  </Form.Control>
+            </Form.Group>
 
             <Form.Group controlId='countInStock'>
               <Form.Label>Count In Stock</Form.Label>

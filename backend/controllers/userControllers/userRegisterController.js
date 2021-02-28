@@ -20,7 +20,7 @@ export const customerRegister = asyncHandler(async (req, res) => {
     if (searchUser.rows.length > 0) {
         res.status(401)
         throw new Error('Customer Already Exists')
-    }
+    }else{
     const newUser = await pool.query(
         `INSERT INTO users(name,email,password,is_customer) VALUES ($1,$2,$3,$4) RETURNING * `,
         [
@@ -54,6 +54,7 @@ export const customerRegister = asyncHandler(async (req, res) => {
         res.status(401)
         throw new Error('Invalid Customer Data')
     }
+    }
 })
 
 
@@ -73,7 +74,7 @@ export const vendorRegister = asyncHandler(async (req, res) => {
     if (searchUser.rows.length > 0) {
         res.status(401)
         throw new Error('Vendor Already Exists')
-    }
+    }else{
     const newUser = await pool.query(
         `INSERT INTO users(name,email,password,is_vendor) VALUES ($1,$2,$3,$4) RETURNING * `,
         [
@@ -106,6 +107,7 @@ export const vendorRegister = asyncHandler(async (req, res) => {
     } else {
         res.status(401)
         throw new Error('Invalid Vendor Data')
+    }
     }
 })
 

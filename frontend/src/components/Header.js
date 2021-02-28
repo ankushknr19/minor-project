@@ -1,6 +1,4 @@
 import React, { useEffect } from 'react'
-// import { Route } from 'react-router-dom'
-import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { LinkContainer } from 'react-router-bootstrap'
 import { Navbar, Nav, Container, NavDropdown, Badge } from 'react-bootstrap'
@@ -50,7 +48,10 @@ useEffect(()=>{
                {userInfo ? (    
                  <NavDropdown title={userInfo.name} id='username'  hidden = {userInfo?.is_vendor}>
                  <LinkContainer to='/profile'>
-                   <NavDropdown.Item>Profile</NavDropdown.Item>
+                   <NavDropdown.Item hidden = {userInfo?.is_vendor}>Profile</NavDropdown.Item>
+                 </LinkContainer>
+                 <LinkContainer to='/myorders'>
+                   <NavDropdown.Item hidden = {userInfo?.is_vendor}>My Orders</NavDropdown.Item>
                  </LinkContainer>
                  <NavDropdown.Item onClick={logoutHandler}>
                    Logout

@@ -1,6 +1,7 @@
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux'
 import thunk from 'redux-thunk'
 import { vendorDetailsReducer, vendorListReducer } from './reducers/vendorReducers'
+import { composeWithDevTools } from 'redux-devtools-extension'
 import { persistReducer } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
 import {
@@ -21,14 +22,23 @@ import {
   userUpdateReducer,
 } from './reducers/userReducers'
 import { 
-  customerAddressReducer, 
-} from './reducers/customerReducers'
+  customerAddressCreateReducer,
+  customerAddressDeleteReducer,
+  customerAddressReducer,
+  customerAddressUpdateReducer, 
+} from './reducers/addressReducers'
 import {  
   cartListReducer, 
   cartItemDeleteReducer, 
   cartItemAddReducer, 
   cartItemUpdateReducer, 
 } from './reducers/cartReducers'
+import { 
+  customerOrderListReducer,
+  orderCreateReducer, 
+  orderDetailsCreateReducer, 
+  customerOrderDetailsReducer,
+} from './reducers/orderReducers'
 
 
 
@@ -50,32 +60,42 @@ const reduce = {
   userDelete: userDeleteReducer,
   userUpdate: userUpdateReducer,
   customerAddress: customerAddressReducer,
+  customerAddressCreate: customerAddressCreateReducer,
+  customerAddressUpdate: customerAddressUpdateReducer,
+  customerAddressDelete: customerAddressDeleteReducer,
   cartList: cartListReducer,
   cartItemDelete: cartItemDeleteReducer,
   newCartItem: cartItemAddReducer,
   cartItemUpdate: cartItemUpdateReducer,
+  orderCreate: orderCreateReducer,
+  orderDetailsCreate: orderDetailsCreateReducer,
+  customerOrderList: customerOrderListReducer,
+  customerOrderDetails: customerOrderDetailsReducer,
 }
 
 const reducer = combineReducers(reduce)
 
-// const cartItemsFromStorage = localStorage.getItem('cartItems')
-//   ? JSON.parse(localStorage.getItem('cartItems'))
-//   : []
 
-// const initialState = {
-//   cart: { cartItems: cartItemsFromStorage }
-// }
+const userInfoFromStorage = localStorage.getItem('userInfo')
+  ? JSON.parse(localStorage.getItem('userInfo'))
+  : null
+
+const initialState = {
+  user: { userInfo: userInfoFromStorage}
+}
+
 
 const middleware = [thunk]
 
-const composeEnhances = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
+// const composeEnhances = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 
-const persistConfig = {
-  key: 'root',
-  storage: storage,
-  whitelist: Object.keys(reduce)
-};
+// const persistConfig = {
+//   key: 'root',
+//   storage: storage,
+//   whitelist: Object.keys(reduce)
+// };
 
-const store = createStore(persistReducer(persistConfig, reducer), composeEnhances(applyMiddleware(...middleware)))
+// const store = createStore(persistReducer(persistConfig, reducer), composeEnhances(applyMiddleware(...middleware)))
+const store = createStore(reducer, initialState, composeWithDevTools(applyMiddleware(...middleware)))
 
 export default store

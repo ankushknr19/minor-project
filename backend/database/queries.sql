@@ -88,20 +88,72 @@ CREATE TABLE products
                         cart_id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
                         customer_id uuid,
                         product_id uuid,
-                        qty NUMERIC DEFAULT 1,
-                        FOREIGN KEY (customer_id) REFERENCES customers (customer_id),
-                        FOREIGN KEY (product_id) REFERENCES products (product_id)
-                    );
-
-                    -- order items table
-                    CREATE TABLE orders
-                    (
-                        order_id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
-                        cart_id uuid
+                        qty INT DEFAULT 1,
                         created_at TIMESTAMP
                         WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP ,
-	                    FOREIGN KEY
+                        updated_at TIMESTAMP
+                        WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP ,
+                        FOREIGN KEY
                         (customer_id) REFERENCES customers
-                        (customer_id)
+                        (customer_id),
+                        FOREIGN KEY
+                        (product_id) REFERENCES products
+                        (product_id)
+                    );
 
+                        -- order table
+                        CREATE TABLE orders
+                        (
+                            order_id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+                            customer_id uuid,
+                            payment_id uuid,
+                            total_price NUMERIC,
+                            shipping_address varchar,
+                            is_fulfilled BOOLEAN DEFAULT FALSE,
+                            created_at TIMESTAMP
+                            WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP ,
+	                    FOREIGN KEY
+                            (customer_id) REFERENCES customers
+                            (customer_id)
+
+);
+                            -- order details table
+                            CREATE TABLE order_details
+                            (
+                                order_details_id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+                                order_id uuid,
+                                product_id uuid,
+                                customer_id uuid,
+                                vendor_id uuid,
+                                is_fulfilled BOOLEAN DEFAULT FALSE,
+                                qty INT ,
+                                price NUMERIC,
+                                created_at TIMESTAMP
+                                WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP ,
+	                    FOREIGN KEY
+                                (order_id) REFERENCES orders
+                                (order_id),
+	                    FOREIGN KEY
+                                (product_id) REFERENCES products
+                                (product_id),
+	                    FOREIGN KEY
+                                (customer_id) REFERENCES customers
+                                (customer_id),
+	                    FOREIGN KEY
+                                (vendor_id) REFERENCES vendors
+                                (vendor_id)
+
+);
+
+                                -- payment done by customers table
+                                CREATE TABLE payments
+                                (
+                                    payment_id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+                                    customer_id uuid,
+                                    amount NUMERIC,
+                                    created_at TIMESTAMP
+                                    WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP ,
+                                FOREIGN KEY
+                                    (customer_id) REFERENCES customers
+                                    (customer_id)
 );

@@ -12,6 +12,7 @@ import {
   CART_ITEM_UPDATE_SUCCESS,
   CART_ITEM_UPDATE_FAIL,
   CART_ITEM_ADD_RESET,
+  CART_LIST_RESET,
 } from '../constants/cartConstants'
 
 
@@ -24,6 +25,8 @@ export const cartListReducer = (state = { cartItems: [] }, action) => {
       return { loading: false, cartItems: action.payload }
     case CART_LIST_FAIL:
       return { loading: false, error: action.payload }
+      case CART_LIST_RESET:
+        return {cartItems: [] }
     default:
       return state
   }

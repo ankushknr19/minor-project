@@ -6,15 +6,11 @@ import asyncHandler from 'express-async-handler'
 // @access  Private/customer
 export const cart = asyncHandler(async (req, res) => {
     try {
-        const getCart = await pool.query("SELECT carts.*, products.*, vendors.vendor_name FROM carts JOIN products ON carts.product_id = products.product_id INNER JOIN vendors on products.vendor_id=vendors.vendor_id WHERE customer_id=$1",[req.customer.rows[0].customer_id])   
-        if (getCart.rows[0]==0) {
-            res.status(404)
-            throw new Error('Cart is empty')
-        } else {
+        const getCart = await pool.query("SELECT carts.*, products.*, vendors.vendor_name FROM carts JOIN products ON carts.product_id = products.product_id INNER JOIN vendors on products.vendor_id=vendors.vendor_id WHERE customer_id=$1 ORDER BY carts.created_at ASC ",[req.customer.rows[0].customer_id])   
+
             res.json(getCart.rows)
-        }
     } catch (error) {
-        console.error(error.message)
+        res.status(404).json(error.message)
     }
 })
 
@@ -34,7 +30,7 @@ export const deleteCartItem = asyncHandler(async (req, res) => {
             res.status(201).json({ message: 'Cart item removed' })
         }
     } catch (error) {
-        console.error(error.message)
+        res.status(404).json(error.message)
     }
 
 })
@@ -56,7 +52,7 @@ export const addCartItem = async (req, res) => {
                 req.body.product_id,
                 req.body.qty
             ])
-            res.status(201).json(newCartItem.rows)
+            res.status(201).json(newCartItem.rows[0])
         } 
         else {
             
@@ -66,12 +62,12 @@ export const addCartItem = async (req, res) => {
                 req.body.product_id
             ])
 
-            res.status(201).json(updatedCartItem.rows)
+            res.status(201).json(updatedCartItem.rows[0])
         }
             
     }
      catch (error) {
-        console.error(error.message)
+        res.status(404).json(error.message)
     }
 }
 
@@ -97,9 +93,9 @@ export const updateCartItem = asyncHandler(async (req, res) => {
                 req.params.id
             ])
 
-            res.status(201).json(updatedCartItem.rows)
+            res.status(201).json(updatedCartItem.rows[0])
         }
     } catch (error) {
-        console.error(error.message)
+        res.status(404).json(error.message)
     }
 })

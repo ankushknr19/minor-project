@@ -9,6 +9,7 @@ import { listVendors } from '../actions/vendorActions'
 import Vendor from '../components/Vendor'
 import VendorScreen from './VendorScreen'
 import { getCart } from '../actions/cartActions'
+import { getCustomerOrderList } from '../actions/orderActions'
 
 const HomeScreen = () => {
 
@@ -26,6 +27,7 @@ const HomeScreen = () => {
 
   useEffect(() => {
     dispatch(getCart())
+    dispatch(getCustomerOrderList())
     dispatch(listProducts())
     dispatch(listVendors())
   }, [dispatch])

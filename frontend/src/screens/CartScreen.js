@@ -5,13 +5,14 @@ import { Row, Col, ListGroup, Image, Form, Button, Card } from 'react-bootstrap'
 import Message from '../components/Message'
 import { deleteCartItem, getCart, updateCartItem } from '../actions/cartActions'
 import { CART_ITEM_ADD_RESET } from '../constants/cartConstants'
+import Loader from '../components/Loader'
 
 const CartScreen = ({ match, location, history }) => {
 
   const dispatch = useDispatch()
 
   const cartList = useSelector((state) => state.cartList)
-  const { cartItems } = cartList
+  const { loading, error, cartItems } = cartList
 
   const cartItemDelete = useSelector((state) => state.cartItemDelete)
   const {
@@ -50,13 +51,20 @@ const CartScreen = ({ match, location, history }) => {
   }
 
   const checkoutHandler = () => {
-    history.push('/login?redirect=shipping')
+    history.push('/login?redirect=placeorder')
   }
 
   return (
     <Row>
       <Col md={8}>
         <h1>Shopping Cart</h1>
+        {loading
+        ? (<Loader />)
+        : error
+          && (
+            <Message variant='danger'>{error}</Message>
+            )
+          }
         {cartItems?.length === 0 ? (
           <Message>
             Your cart is empty! <Link to='/'> Shop now! </Link>
@@ -80,7 +88,7 @@ const CartScreen = ({ match, location, history }) => {
                   </Col>
                   <Col md={2}>Rs {cartItem.product_price}</Col>
                   <Col md={2}>
-                    Qty: {cartItem.qty}
+                    Qty:
                     <Form.Control
                       as='select'
                       value={cartItem.qty}
@@ -118,11 +126,25 @@ const CartScreen = ({ match, location, history }) => {
         <Card >
           <ListGroup variant='flush'>
             <ListGroup.Item>
-              <h2>
-                Subtotal ({cartItems?.reduce((acc, cartItem) => acc + cartItem.qty, 0)})
+                <h2>
+                   Subtotal
+                </h2>
+                <h3>
+                ({cartItems?.reduce((acc, cartItem) => acc + cartItem.qty, 0)})
                 items
-              </h2>
-                
+              </h3>
+              </ListGroup.Item>
+              <ListGroup.Item>
+              {cartItems?.map((cartItem) => (
+                <Row>
+                  <Col md={4}>
+               {cartItem.product_name}  
+               </Col>
+               <Col>
+               {cartItem.qty} x Rs {cartItem.product_price} = Rs {cartItem.qty * cartItem.product_price}
+                </Col>
+               </Row>
+              ))}
               </ListGroup.Item>
               <ListGroup.Item>
               <h2>
@@ -145,6 +167,7 @@ const CartScreen = ({ match, location, history }) => {
           
           </ListGroup>
         </Card>
+        
       </Col>
     </Row>
   )

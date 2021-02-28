@@ -8,7 +8,7 @@ const allVendors = async(req,res) => {
 
         res.json(vendors.rows);
     } catch (error) {
-        console.error(error.message);
+        res.status(404).json(error.message);
     }
 };
 
@@ -20,7 +20,7 @@ const aVendor = async(req,res) => {
 
         res.json(vendor.rows[0]);
     } catch (error) {
-        console.error(error.message);
+        res.status(404).json(error.message);
     }
 };
 

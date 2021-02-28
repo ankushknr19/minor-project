@@ -14,8 +14,8 @@ import jwtGenerator from '../../utils/jwtGenerator.js'
     )
     const hashedPassword = bcrypt.hashSync(validateResult.password, 10)
     const searchDbResults = await pool.query(
-        `SELECT user_id, email FROM users WHERE user_id=$1`,
-        [req.user]
+        `SELECT email FROM users WHERE user_id=$1`,
+        [req.user.rows[0].user_id]
     )
     
     if (searchDbResults.rows[0].length == 0) {
@@ -27,7 +27,7 @@ import jwtGenerator from '../../utils/jwtGenerator.js'
             [
                 validateResult.name,
                 hashedPassword,
-                req.user,
+                req.user.rows[0].user_id,
             ]
         )
         res.status(201).json({

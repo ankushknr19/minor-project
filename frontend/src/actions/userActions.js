@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { CART_ITEM_ADD_RESET, CART_LIST_RESET } from '../constants/cartConstants'
 import {
   USER_DETAILS_FAIL,
   USER_DETAILS_REQUEST,
@@ -25,6 +26,7 @@ import {
   USER_UPDATE_SUCCESS,
   USER_UPDATE_REQUEST,
 } from '../constants/userConstants'
+import { getCart } from './cartActions'
 
 
 export const login = (email, password) => async (dispatch) => {
@@ -49,6 +51,7 @@ export const login = (email, password) => async (dispatch) => {
       type: USER_LOGIN_SUCCESS,
       payload: data,
     })
+    dispatch(getCart())
 
     localStorage.setItem('userInfo', JSON.stringify(data))
   } catch (error) {
@@ -66,8 +69,9 @@ export const logout = () => (dispatch) => {
   localStorage.removeItem('userInfo')
   dispatch({ type: USER_LOGOUT })
   dispatch({ type: USER_DETAILS_RESET })
+  dispatch({ type: CART_LIST_RESET })
+  dispatch({ type: CART_ITEM_ADD_RESET })
   dispatch({ type: USER_LIST_RESET })
-  document.location.href = '/'
 }
 
 export const register = (name, email, password) => async (dispatch) => {

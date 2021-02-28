@@ -19,7 +19,8 @@ const ProductScreen = ({ match, history }) => {
   const { loading, error, product } = productDetails
 
   const newCartItem = useSelector(state => state.newCartItem)
-  const { success: addCartSuccess } = newCartItem
+  const { success: addCartSuccess,
+          newCartItem: cartNewItem } = newCartItem
 
   useEffect(() => {
     dispatch(listProductDetails(match.params.id))
@@ -119,17 +120,17 @@ const ProductScreen = ({ match, history }) => {
                     </ListGroup.Item>
                   )}
 
-                <ListGroup.Item hidden = {addCartSuccess}>
+                <ListGroup.Item hidden = {addCartSuccess && cartNewItem[0]?.product_id === product.product_id}>
                   <Button
                   onClick = {addToCartHandler}
                   className='btn-block' type='button' 
-                  disabled={product.count_in_stock === 0 || userInfo?.is_vendor }
+                  disabled={product.count_in_stock === 0 }
                   >
                     Add to Cart
                   </Button>
                 </ListGroup.Item>
                 <ListGroup.Item 
-                  hidden = {!addCartSuccess || !userInfo}
+                  hidden = { !userInfo || !addCartSuccess || cartNewItem[0]?.product_id !== product.product_id}
                 >
                 <Link to={'/cart'}>
                    <Button className='btn-block' variant="outline-dark" type='button'>

@@ -13,7 +13,7 @@ const allProducts = async(req,res) => {
 
         res.json(products.rows)
     } catch (error) {
-        console.error(error.message)
+        res.status(404).json(error.message)
     }
 }
 
@@ -22,7 +22,6 @@ const allProducts = async(req,res) => {
 // @access  Public
 const aProduct = async(req,res) => {
     try {
-        // const product = await pool.query("SELECT * FROM products WHERE product_id=$1",[req.params.id])
         const product = await pool.query("SELECT products.* , vendors.vendor_name FROM  products LEFT JOIN vendors ON products.vendor_id=vendors.vendor_id  WHERE product_id=$1",[req.params.id])
 
         if (product.rows[0]==0) {
@@ -32,7 +31,7 @@ const aProduct = async(req,res) => {
             res.json(product.rows[0])
         }
     } catch (error) {
-        console.error(error.message)
+        res.status(404).json(error.message)
     }
 }
 
@@ -52,7 +51,7 @@ const vendorProducts = async(req,res) => {
         }
         
     } catch (error) {
-        console.error(error.message)
+        res.status(404).json(error.message)
     }
 }
 
@@ -71,7 +70,7 @@ const deleteProduct = asyncHandler(async (req, res) => {
             res.json({ message: 'Product removed' })
         }
     } catch (error) {
-        console.error(error.message)
+        res.status(404).json(error.message)
     }
 
 })
@@ -98,7 +97,7 @@ const deleteVendorProduct = asyncHandler(async (req, res) => {
             res.status(201).json({ message: 'Product removed' })
         }
     } catch (error) {
-        console.error(error.message)
+        res.status(404).json(error.message)
     }
 
 })
@@ -124,7 +123,7 @@ const addProduct = async (req, res) => {
         res.status(201).json(createdProduct.rows[0])
         
     } catch (error) {
-        console.error(error.message)
+        res.status(404).json(error.message)
     }
 }
 
@@ -154,7 +153,7 @@ const updateProduct = asyncHandler(async (req, res) => {
             res.status(201).json(updatedProduct.rows[0])
         }
     } catch (error) {
-        console.error(error.message)
+        res.status(404).json(error.message)
     }
 })
 

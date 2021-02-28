@@ -17,7 +17,6 @@ const verifyToken = asyncHandler(async (req, res, next) => {
       req.user = await pool.query("SELECT user_id, name, email,is_admin, is_vendor, is_customer from users WHERE user_id=$1", [payload.id])
       req.vendor = await pool.query("SELECT user_id, vendor_id from vendors WHERE user_id=$1", [payload.id])
       req.customer = await pool.query("SELECT user_id, customer_id from customers WHERE user_id=$1", [payload.id])
-
       next()
     } catch (error) {
       console.error(error)

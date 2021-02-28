@@ -7,7 +7,7 @@ import Loader from '../components/Loader'
 import { listProducts } from '../actions/productActions'
 import { listVendorDetails, listVendors } from '../actions/vendorActions'
 import Vendor from '../components/Vendor'
-import VendorScreen from './VendorScreens/VendorScreen'
+import VendorScreen from './VendorScreen'
 import { getCart } from '../actions/cartActions'
 import { getCustomerOrderList } from '../actions/orderActions'
 import {VENDOR_DETAILS_RESET} from '../constants/vendorConstants'
@@ -29,7 +29,6 @@ const HomeScreen = () => {
   useEffect(() => {
     dispatch(listProducts())
     dispatch(listVendors())
-    dispatch(listVendorDetails('4a3b6dae-7592-4217-9de8-3f1eb5b41e17'))
     if(userInfo && userInfo?.is_customer){
       dispatch(getCart())
       dispatch(getCustomerOrderList())

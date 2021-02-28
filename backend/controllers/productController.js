@@ -109,14 +109,15 @@ const deleteVendorProduct = asyncHandler(async (req, res) => {
 const addProduct = async (req, res) => {
     try {
         const createdProduct = await pool.query(` INSERT INTO products
-        (product_name, product_image, product_description, product_price, count_in_stock, vendor_id )
-        VALUES($1,$2,$3,$4,$5,$6) RETURNING * `,
+        (product_name, product_image, product_description, product_price, count_in_stock, category, vendor_id )
+        VALUES($1,$2,$3,$4,$5,$6,$7) RETURNING * `,
         [
             req.body.name,
             req.body.image,
             req.body.description,
             req.body.price,
             req.body.count_in_stock,
+            req.body.category,
             req.vendor.rows[0].vendor_id
         ])
 

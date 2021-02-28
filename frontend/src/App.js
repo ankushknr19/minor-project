@@ -19,7 +19,7 @@ import AddressEditScreen from './screens/CustomerScreens/AddressEditScreen'
 import PlaceOrderScreen from './screens/CustomerScreens/PlaceOrderScreen'
 import CustomerOrderListScreen from './screens/CustomerScreens/CustomerOrderListScreen'
 import CustomerOrderDetailsScreen from './screens/CustomerScreens/CustomerOrderDetailsScreen'
-import VendorScreen from './screens/VendorScreens/VendorScreen'
+import VendorScreen from './screens/VendorScreen'
 
 const App = () => {
   return (

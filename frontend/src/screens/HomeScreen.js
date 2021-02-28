@@ -1,15 +1,16 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Row, Col, CardDeck, CardGroup, CardColumns } from 'react-bootstrap'
+import { Row, Col } from 'react-bootstrap'
 import Product from '../components/Product'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 import { listProducts } from '../actions/productActions'
-import { listVendors } from '../actions/vendorActions'
+import { listVendorDetails, listVendors } from '../actions/vendorActions'
 import Vendor from '../components/Vendor'
-import VendorScreen from './VendorScreen'
+import VendorScreen from './VendorScreens/VendorScreen'
 import { getCart } from '../actions/cartActions'
 import { getCustomerOrderList } from '../actions/orderActions'
+import {VENDOR_DETAILS_RESET} from '../constants/vendorConstants'
 
 const HomeScreen = () => {
 
@@ -26,11 +27,15 @@ const HomeScreen = () => {
   const { loading: vendorListLoading , error: vendorListError, vendors } = vendorList
 
   useEffect(() => {
-    dispatch(getCart())
-    dispatch(getCustomerOrderList())
     dispatch(listProducts())
     dispatch(listVendors())
-  }, [dispatch])
+    dispatch(listVendorDetails('4a3b6dae-7592-4217-9de8-3f1eb5b41e17'))
+    if(userInfo && userInfo?.is_customer){
+      dispatch(getCart())
+      dispatch(getCustomerOrderList())
+    }
+    dispatch({type: VENDOR_DETAILS_RESET})
+  }, [dispatch, userInfo])
 
   return (
     <>

@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import { Form, Button } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
-import Message from '../components/Message'
-import Loader from '../components/Loader'
-import FormContainer from '../components/FormContainer'
-import { CUSTOMER_ADDRESS_UPDATE_RESET } from '../constants/addressConstants'
-import { getCustomerAddress, updateCustomerAddress } from '../actions/addressActions'
+import Message from '../../components/Message'
+import Loader from '../../components/Loader'
+import FormContainer from '../../components/FormContainer'
+import { CUSTOMER_ADDRESS_UPDATE_RESET } from '../../constants/addressConstants'
+import { getCustomerAddress, updateCustomerAddress } from '../../actions/addressActions'
 
 const AddressEditScreen = ({ match, history }) => {
 

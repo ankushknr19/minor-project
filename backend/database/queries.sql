@@ -1,64 +1,67 @@
 CREATE DATABASE projectone;
 
-CREATE TABLE products
+--users table
+CREATE TABLE users
 (
-    product_id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
-    product_name VARCHAR(255) NOT NULL,
-    product_image VARCHAR(255) NOT NULL,
-    product_description TEXT NOT NULL,
-    product_price NUMERIC NOT NULL DEFAULT 0,
-    count_in_stock NUMERIC NOT NULL DEFAULT 0,
-    vendor_id uuid,
+    user_id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+    name VARCHAR(255)NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    is_admin BOOLEAN DEFAULT FALSE,
+    is_vendor BOOLEAN DEFAULT FALSE,
+    is_customer BOOLEAN DEFAULT FALSE,
     created_at TIMESTAMP
-    WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY
-    (vendor_id) REFERENCES vendors
-    (vendor_id)
-
+    WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP ,
+    UNIQUE
+    (email)
 );
 
-    --users table
-    CREATE TABLE users
+    --vendor table
+    CREATE TABLE vendors
     (
-        user_id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
-        name VARCHAR(255)NOT NULL,
-        email VARCHAR(255) NOT NULL,
-        password VARCHAR(255) NOT NULL,
-        is_admin BOOLEAN DEFAULT FALSE,
-        is_vendor BOOLEAN DEFAULT FALSE,
-        is_customer BOOLEAN DEFAULT FALSE,
+        vendor_id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+        user_id uuid,
+        vendor_name VARCHAR(255)NOT NULL,
+        vendor_logo VARCHAR,
         created_at TIMESTAMP
         WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP ,
-    UNIQUE
-        (email)
+	        FOREIGN KEY
+        (user_id) REFERENCES users
+        (user_id)
+
 );
 
-        --vendor table
-        CREATE TABLE vendors
+        --customer table
+        CREATE TABLE customers
         (
-            vendor_id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+            customer_id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
             user_id uuid,
-            vendor_name VARCHAR(255)NOT NULL,
+            customer_name VARCHAR(255)NOT NULL,
+            phone_number NUMERIC,
             created_at TIMESTAMP
             WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP ,
-	        FOREIGN KEY
+	    FOREIGN KEY
             (user_id) REFERENCES users
             (user_id)
 
 );
 
-            --customer table
-            CREATE TABLE customers
+            --product table
+
+            CREATE TABLE products
             (
-                customer_id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
-                user_id uuid,
-                customer_name VARCHAR(255)NOT NULL,
-                phone_number NUMERIC,
+                product_id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+                product_name VARCHAR(255) NOT NULL,
+                product_image VARCHAR(255) NOT NULL,
+                product_description TEXT NOT NULL,
+                product_price NUMERIC NOT NULL DEFAULT 0,
+                count_in_stock NUMERIC NOT NULL DEFAULT 0,
+                vendor_id uuid,
                 created_at TIMESTAMP
-                WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP ,
-	    FOREIGN KEY
-                (user_id) REFERENCES users
-                (user_id)
+                WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY
+                (vendor_id) REFERENCES vendors
+                (vendor_id)
 
 );
 
@@ -145,15 +148,15 @@ CREATE TABLE products
 
 );
 
-                                -- payment done by customers table
-                                CREATE TABLE payments
-                                (
-                                    payment_id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
-                                    customer_id uuid,
-                                    amount NUMERIC,
-                                    created_at TIMESTAMP
-                                    WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP ,
-                                FOREIGN KEY
-                                    (customer_id) REFERENCES customers
-                                    (customer_id)
-);
+--                                 -- payment done by customers table
+--                                 CREATE TABLE payments
+--                                 (
+--                                     payment_id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+--                                     customer_id uuid,
+--                                     amount NUMERIC,
+--                                     created_at TIMESTAMP
+--                                     WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP ,
+--                                 FOREIGN KEY
+--                                     (customer_id) REFERENCES customers
+--                                     (customer_id)
+-- );

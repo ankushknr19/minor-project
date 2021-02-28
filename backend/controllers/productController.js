@@ -9,7 +9,7 @@ import path from 'path'
 const allProducts = async(req,res) => {
     try {
     //    const products = await pool.query("SELECT * FROM  products ")
-       const products = await pool.query("SELECT products.* , vendors.vendor_name FROM  products LEFT JOIN vendors ON products.vendor_id=vendors.vendor_id")
+       const products = await pool.query("SELECT products.* , vendors.vendor_name FROM  products LEFT JOIN vendors ON products.vendor_id=vendors.vendor_id ORDER BY products.created_at DESC")
 
         res.json(products.rows)
     } catch (error) {
@@ -41,7 +41,7 @@ const aProduct = async(req,res) => {
 
 const vendorProducts = async(req,res) => {
     try {
-        const productsVendor = await pool.query("SELECT * FROM products WHERE vendor_id=$1",[req.params.id])
+        const productsVendor = await pool.query("SELECT * FROM products WHERE vendor_id=$1 ORDER BY created_at DESC",[req.params.id])
 
         if (productsVendor.rows[0] == 0) {
             res.status(404)

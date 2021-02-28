@@ -2,10 +2,10 @@ import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { Row, Col, ListGroup, Image, Form, Button, Card } from 'react-bootstrap'
-import Message from '../components/Message'
-import { deleteCartItem, getCart, updateCartItem } from '../actions/cartActions'
-import { CART_ITEM_ADD_RESET } from '../constants/cartConstants'
-import Loader from '../components/Loader'
+import Message from '../../components/Message'
+import { deleteCartItem, getCart, updateCartItem } from '../../actions/cartActions'
+import { CART_ITEM_ADD_RESET } from '../../constants/cartConstants'
+import Loader from '../../components/Loader'
 
 const CartScreen = ({ match, location, history }) => {
 

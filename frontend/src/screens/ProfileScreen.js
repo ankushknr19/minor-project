@@ -1,12 +1,11 @@
 import React, {useEffect } from 'react'
-import { Table, Form, Button, Row, Col, ListGroup, Jumbotron, Badge } from 'react-bootstrap'
+import { Button, Row, Col, ListGroup, Jumbotron } from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 import { getUserDetails } from '../actions/userActions'
 import { deleteCustomerAddress, getCustomerAddress } from '../actions/addressActions'
-import { Link } from 'react-router-dom'
 
 const ProfileScreen = ({ history }) => {
 
@@ -63,7 +62,7 @@ const ProfileScreen = ({ history }) => {
                         </Button>
                         </LinkContainer>
         </Col>
-        <Col md={4}>
+        <Col md={4} hidden={user?.is_vendor}>
         <h3>Shipping Address</h3>
         {address?.length === 0 ? (  
             <LinkContainer to='/createaddress'>

@@ -13,9 +13,10 @@ const verifyToken = asyncHandler(async (req, res, next) => {
       jwtToken = req.headers.authorization.split(' ')[1]
 
       const payload = jwt.verify(jwtToken, process.env.JWT_SECRET_KEY)
+      // console.log(payload)
 
       req.user = await pool.query("SELECT user_id, name, email,is_admin, is_vendor, is_customer from users WHERE user_id=$1", [payload.id])
-      req.vendor = await pool.query("SELECT user_id, vendor_id from vendors WHERE user_id=$1", [payload.id])
+      req.vendor= await pool.query("SELECT user_id, vendor_id from vendors WHERE user_id=$1", [payload.id])
       req.customer = await pool.query("SELECT user_id, customer_id from customers WHERE user_id=$1", [payload.id])
       next()
     } catch (error) {
@@ -30,6 +31,7 @@ const verifyToken = asyncHandler(async (req, res, next) => {
     throw new Error('Not authorized, no token')
   }
 })
+
 
 const admin = (req, res, next) => {
   if (req.user && req.user.rows[0].is_admin) {

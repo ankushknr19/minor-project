@@ -1,7 +1,7 @@
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux'
 import thunk from 'redux-thunk'
 import { vendorDetailsReducer, vendorListReducer } from './reducers/vendorReducers'
-import { composeWithDevTools } from 'redux-devtools-extension'
+// import { composeWithDevTools } from 'redux-devtools-extension'
 import { persistReducer } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
 import {
@@ -87,15 +87,15 @@ const initialState = {
 
 const middleware = [thunk]
 
-// const composeEnhances = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
+const composeEnhances = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 
-// const persistConfig = {
-//   key: 'root',
-//   storage: storage,
-//   whitelist: Object.keys(reduce)
-// };
+const persistConfig = {
+  key: 'root',
+  storage: storage,
+  whitelist: Object.keys(reduce)
+};
 
-// const store = createStore(persistReducer(persistConfig, reducer), composeEnhances(applyMiddleware(...middleware)))
-const store = createStore(reducer, initialState, composeWithDevTools(applyMiddleware(...middleware)))
+const store = createStore(persistReducer(persistConfig, reducer), composeEnhances(applyMiddleware(...middleware)))
+// const store = createStore(reducer, initialState, composeWithDevTools(applyMiddleware(...middleware)))
 
 export default store

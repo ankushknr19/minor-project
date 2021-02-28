@@ -4,7 +4,8 @@ VENDOR_LIST_SUCCESS,
 VENDOR_LIST_FAIL,
 VENDOR_DETAILS_FAIL,
 VENDOR_DETAILS_SUCCESS,
-VENDOR_DETAILS_REQUEST
+VENDOR_DETAILS_REQUEST,
+VENDOR_DETAILS_RESET
 } from '../constants/vendorConstants'
 
 export const vendorListReducer = (state = { vendors: [ ] }, action) => {
@@ -28,6 +29,8 @@ export const vendorDetailsReducer = (state = { vendor: { } }, action) => {
       return { loading: false, vendor: action.payload }
     case VENDOR_DETAILS_FAIL :
       return { loading: false,vendor: action.payload }
+    case VENDOR_DETAILS_RESET :
+      return { vendor: { } }
     default:
       return state
     }

@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Form, Button, Row, Col } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
-import Message from '../components/Message'
-import Loader from '../components/Loader'
-import FormContainer from '../components/FormContainer'
-import { register } from '../actions/vendorAuthActions'
+import Message from '../../components/Message'
+import Loader from '../../components/Loader'
+import FormContainer from '../../components/FormContainer'
+import { register } from '../../actions/userActions'
 
-const VendorRegisterScreen = ({ location, history }) => {
+const RegisterScreen = ({ location, history }) => {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -38,7 +38,7 @@ const VendorRegisterScreen = ({ location, history }) => {
 
   return (
     <FormContainer>
-      <h1>Vendor Register</h1>
+      <h1>Sign Up</h1>
       {message && <Message variant='danger'>{message}</Message>}
       {error && <Message variant='danger'>{error}</Message>}
       {loading && <Loader />}
@@ -91,7 +91,7 @@ const VendorRegisterScreen = ({ location, history }) => {
       <Row className='py-3'>
         <Col>
           Have an Account?{' '}
-          <Link to={redirect ? `/login/vendor?redirect=${redirect}` : '/login/vendor'}>
+          <Link to={redirect ? `/login?redirect=${redirect}` : '/login'}>
             Login
           </Link>
         </Col>
@@ -100,4 +100,4 @@ const VendorRegisterScreen = ({ location, history }) => {
   )
 }
 
-export default VendorRegisterScreen
+export default RegisterScreen

@@ -37,8 +37,8 @@ const CustomerOrderDetailsScreen = ({ match, history }) => {
         <Table striped bordered hover responsive className='table-sm'>
           <thead>
             <tr>
-              <th>PRODUCT ID</th>
-              <th>VENDOR ID</th>
+              <th>PRODUCT NAME</th>
+              <th>VENDOR NAME</th>
               <th>PRICE</th>
               <th>QUANTITY</th>
               <th>AMOUNT</th>
@@ -48,12 +48,12 @@ const CustomerOrderDetailsScreen = ({ match, history }) => {
           <tbody>
             {orderDetails.map((orderItem) => (
               <tr key={orderItem.product_id}>
-                <td>
-                    {/* <LinkContainer to={`/products/${orderItem.product_id}`}> */}
-                        {orderItem.product_id}
-                    {/* </LinkContainer> */}
-                </td>
-                <td>{orderItem.vendor_id}</td>
+                  <LinkContainer to={`/products/${orderItem.product_id}`}>
+                    <td>
+                          {orderItem.product_name}
+                    </td>
+                  </LinkContainer>
+                <td>{orderItem.vendor_name}</td>
                 <td>Rs {orderItem.price}</td>
                 <td>{orderItem.qty}</td>
                 <td>Rs {orderItem.qty * orderItem.price}</td>

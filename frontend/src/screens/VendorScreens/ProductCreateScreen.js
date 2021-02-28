@@ -1,77 +1,65 @@
-// import axios from 'axios'
 import React, { useState, useEffect } from 'react'
 import { Form, Button } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
-import Message from '../components/Message'
-import Loader from '../components/Loader'
-import FormContainer from '../components/FormContainer'
-import { listProductDetails, updateProduct } from '../actions/productActions'
-import { PRODUCT_UPDATE_RESET } from '../constants/productConstants'
+import Message from '../../components/Message'
+import Loader from '../../components/Loader'
+import FormContainer from '../../components/FormContainer'
+import { createProduct } from '../../actions/productActions'
+import { PRODUCT_CREATE_RESET } from '../../constants/productConstants'
 
-const ProductEditScreen = ({ match, history }) => {
-  const productId = match.params.id
+const ProductCreateScreen = ({ match, history }) => {
 
   const [name, setName] = useState('')
   const [price, setPrice] = useState(0)
   const [image, setImage] = useState('')
+  const [count_in_stock, setCount_in_stock] = useState(0)
+  const [description, setDescription] = useState('')
+  const [uploading, setUploading] = useState(false)
   // const [brand, setBrand] = useState('')
   // const [category, setCategory] = useState('')
-  const [countInStock, setCountInStock] = useState(0)
-  const [description, setDescription] = useState('')
-  // const [uploading, setUploading] = useState(false)
 
   const dispatch = useDispatch()
 
-  
-  const userLogin = useSelector((state) => state.userLogin);
-  const { userInfo } = userLogin;
+  const userLogin = useSelector((state) => state.userLogin)
+  const { userInfo } = userLogin
 
-  const productDetails = useSelector((state) => state.productDetails)
-  const { loading, error, product } = productDetails
-
-  const productUpdate = useSelector((state) => state.productUpdate)
+  const productCreate = useSelector((state) => state.productCreate)
   const {
-    loading: loadingUpdate,
-    error: errorUpdate,
-    success: successUpdate,
-  } = productUpdate
+    loading: loadingCreate,
+    error: errorCreate,
+    success: successCreate,
+  } = productCreate
 
   useEffect(() => {
+    dispatch({ type: PRODUCT_CREATE_RESET })
 
     if (!userInfo || !userInfo?.is_vendor) {
       history.push('/login/vendor')
     }
 
-    if (successUpdate) {
+    if (successCreate) {
       history.push('/vendor/productlist')
-      dispatch({ type: PRODUCT_UPDATE_RESET })
-    } else {
-      if (!product || product.product_id !== productId) {
-        dispatch(listProductDetails(productId))
-      } else {
-        setName(product.product_name)
-        setPrice(product.product_price)
-        setImage(product.product_image)
-        setCountInStock(product.count_in_stock)
-        setDescription(product.product_description)
-      }
-    }  
-  }, [dispatch, history, userInfo, productId, product, successUpdate])
+      // window.alert("Product created successfully!")
+    }
+  }, [dispatch, history, userInfo, successCreate])
 
   const submitHandler = (e) => {
     e.preventDefault()
     dispatch(
-      updateProduct({ 
-        product_id : productId,
+      createProduct(
         name,
-        price,
         image,
         description,
-        countInStock,
-      })
+        price,
+        count_in_stock
+      )
     )
   }
 
+  const discardHandler = (e) => {
+    dispatch({ type: PRODUCT_CREATE_RESET })
+    window.history.back()
+  }
   // const [errorUpload, setErrorUpload] = useState('');
 
 
@@ -103,14 +91,10 @@ const ProductEditScreen = ({ match, history }) => {
   return (
     <>
       <FormContainer>
-        <h1>Edit Product</h1>
-        {loadingUpdate && <Loader />}
-        {errorUpdate && <Message variant='danger'>{errorUpdate}</Message>}
-        {loading ? (
-          <Loader />
-        ) : error ? (
-          <Message variant='danger'>{error}</Message>
-        ) : (
+        <h1>Create Product</h1>
+        {loadingCreate && <Loader />}
+        {errorCreate && <Message variant='danger'>{errorCreate}</Message>}
+        {(
           <Form onSubmit={submitHandler}>
             <Form.Group controlId='name'>
               <Form.Label>Name</Form.Label>
@@ -143,7 +127,6 @@ const ProductEditScreen = ({ match, history }) => {
               {/* <Form.File
                 id='image-file'
                 label='Choose File'
-                enctype="multipart/form-data"
                 custom
                 onChange={uploadFileHandler}
               ></Form.File> */}
@@ -153,6 +136,9 @@ const ProductEditScreen = ({ match, history }) => {
               )} */}
             </Form.Group>
 
+            {/* <form action="/api/upload" method="post" enctype="multipart/form-data">
+                 <input type="file" name="image" />
+            </form> */}
             {/* <Form.Group controlId='brand'>
               <Form.Label>Brand</Form.Label>
               <Form.Control
@@ -163,13 +149,13 @@ const ProductEditScreen = ({ match, history }) => {
               ></Form.Control>
             </Form.Group> */}
 
-            <Form.Group controlId='countInStock'>
+            <Form.Group controlId='count_in_stock'>
               <Form.Label>Count In Stock</Form.Label>
               <Form.Control
                 type='number'
                 placeholder='Enter count In Stock'
-                value={countInStock}
-                onChange={(e) => setCountInStock(e.target.value)}
+                value={count_in_stock}
+                onChange={(e) => setCount_in_stock(e.target.value)}
               ></Form.Control>
             </Form.Group>
 
@@ -184,13 +170,16 @@ const ProductEditScreen = ({ match, history }) => {
             </Form.Group>
 
             <Button type='submit' variant='primary'>
-              Update
+              Create
             </Button>
           </Form>
         )}
+        <Button type='submit' variant='secondary' onClick={discardHandler}>
+              Cancel
+            </Button>
       </FormContainer>
     </>
   )
 }
 
-export default ProductEditScreen
+export default ProductCreateScreen

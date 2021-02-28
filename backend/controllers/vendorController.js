@@ -4,7 +4,7 @@ import pool from '../database/db.js'
 //get all vendors
 const allVendors = async(req,res) => {
     try {
-       const vendors = await pool.query("SELECT * FROM  vendors ")
+       const vendors = await pool.query("SELECT * FROM  vendors ORDER BY created_at DESC")
 
         res.json(vendors.rows);
     } catch (error) {

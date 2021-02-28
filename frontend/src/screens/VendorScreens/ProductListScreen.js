@@ -2,12 +2,12 @@ import React, { useEffect } from 'react'
 import { LinkContainer } from 'react-router-bootstrap'
 import { Table, Button, Image, Row, Col } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
-import Message from '../components/Message'
-import Loader from '../components/Loader'
+import Message from '../../components/Message'
+import Loader from '../../components/Loader'
 import {
   listVendorProducts,
   deleteProduct,
-} from '../actions/productActions'
+} from '../../actions/productActions'
 
 const ProductListScreen = ({ history, match }) => {
 

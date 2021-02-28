@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import Message from '../components/Message'
-import Loader from '../components/Loader'
-import { listVendorProducts } from '../actions/productActions'
-import { listVendorDetails} from '../actions/vendorActions'
-import { Col, Jumbotron, Row } from 'react-bootstrap'
-import Product from '../components/Product'
+import Message from '../../components/Message'
+import Loader from '../../components/Loader'
+import { listVendorProducts } from '../../actions/productActions'
+// import { listVendorDetails } from '../../actions/vendorActions'
+import { Col, Image, Jumbotron, Row } from 'react-bootstrap'
+import Product from '../../components/Product'
+import { listVendorDetails } from '../../actions/vendorActions'
 
 const VendorScreen = ({match, id}) => {
   const dispatch = useDispatch()
@@ -43,10 +44,19 @@ const VendorScreen = ({match, id}) => {
             ? (<Loader />)
             : error
             ? ( <Message variant='danger'>{error}</Message> )
-            : ( <Row>
-                    <Jumbotron style={{minWidth: '200px'}}>
-                        <h1>{vendor.vendor_name} </h1>
+                    
+            : ( 
+              <Row>
+                  <Col md='2.5'>
+                  <Image src = {`${vendor?.vendor_logo}`} style={{width: '200px'}} roundedCircle/>
+                  </Col>
+                  <Col >
+              <Jumbotron >
+                        <h1>{vendor?.vendor_name} </h1>
+                        <h5>Joined: {vendor?.created_at.substring(0, 10)} </h5>
+                        <h4>{products.length} items </h4>
                     </Jumbotron>
+                    </Col>
                 </Row>
               )
           }

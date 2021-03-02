@@ -5,6 +5,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import Message from '../../components/Message'
 import Loader from '../../components/Loader'
 import { getCustomerOrderList } from '../../actions/orderActions'
+import { Link } from 'react-router-dom'
+import { CUSTOMER_ORDER_DETAILS_RESET } from '../../constants/orderConstants'
 
 const CustomerOrderListScreen = ({ history }) => {
   const dispatch = useDispatch()
@@ -18,6 +20,7 @@ const CustomerOrderListScreen = ({ history }) => {
   useEffect(() => {
     if (userInfo && userInfo?.is_customer) {
       dispatch(getCustomerOrderList())
+      dispatch({type: CUSTOMER_ORDER_DETAILS_RESET})
     } else {
       history.push('/login')
     }
@@ -31,6 +34,11 @@ const CustomerOrderListScreen = ({ history }) => {
       ) : error ? (
         <Message variant='danger'>{error}</Message>
       ) : (
+        customerOrders.length===0 ? 
+          <Message variant='danger'>
+          You have not make any orders yet ! <Link to='/'> Shop now ! </Link>
+          </Message> 
+        :
         <Table striped bordered hover responsive className='table-sm'>
           <thead>
             <tr>
@@ -47,7 +55,7 @@ const CustomerOrderListScreen = ({ history }) => {
             {customerOrders.map((order) => (
               <tr key={order.order_id}>
                 <td>{order.order_id}</td>
-                <td>{order.created_at.substring(0, 10)}</td>
+                <td>{order.created_at?.substring(0, 10)}</td>
                 <td>Rs {order.total_price}</td>
                 <td>{order.payment_id}</td>
                 <td>{order.shipping_address}</td>

@@ -6,6 +6,7 @@ import Message from '../../components/Message'
 import { deleteCartItem, getCart, updateCartItem } from '../../actions/cartActions'
 import { CART_ITEM_ADD_RESET } from '../../constants/cartConstants'
 import Loader from '../../components/Loader'
+import { ORDER_CREATE_RESET } from '../../constants/orderConstants'
 
 const CartScreen = ({ match, location, history }) => {
 
@@ -16,15 +17,15 @@ const CartScreen = ({ match, location, history }) => {
 
   const cartItemDelete = useSelector((state) => state.cartItemDelete)
   const {
-    loading: loadingDelete,
-    error: errorDelete,
+    // loading: loadingDelete,
+    // error: errorDelete,
     success: successDelete,
   } = cartItemDelete
 
   const cartItemUpdate = useSelector((state) => state.cartItemUpdate)
   const {
-    loading: loadingUpdate,
-    error: errorUpdate,
+    // loading: loadingUpdate,
+    // error: errorUpdate,
     success: successUpdate,
   } = cartItemUpdate
 
@@ -36,9 +37,10 @@ const CartScreen = ({ match, location, history }) => {
 
         if (!userInfo || !userInfo?.is_customer) {
       history.push('/login?redirect=cart')
-      dispatch(getCart())
+      // dispatch(getCart())
     }else{
       dispatch(getCart())
+      dispatch({ type: ORDER_CREATE_RESET })
     }
   }, [dispatch, history, userInfo, successDelete,successUpdate])
 

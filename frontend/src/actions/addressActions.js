@@ -128,7 +128,7 @@ import {
 
 
 
-    export const updateCustomerAddress = (name, phone_number, city, area, address) => async (dispatch, getState) => {
+    export const updateCustomerAddress = (address) => async (dispatch, getState) => {
       try {
         dispatch({
           type: CUSTOMER_ADDRESS_UPDATE_REQUEST,
@@ -147,7 +147,7 @@ import {
     
         const { data } = await axios.put(
           `/api/customer/address`,
-          {name, phone_number, city, area, address},
+          address,
           config
         )
     

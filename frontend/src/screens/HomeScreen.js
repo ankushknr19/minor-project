@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Row, Col, Button, Jumbotron } from 'react-bootstrap'
+import { Row, Col, Jumbotron } from 'react-bootstrap'
 import Product from '../components/Product'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 import { listProducts } from '../actions/productActions'
-import { listVendorDetails, listVendors } from '../actions/vendorActions'
+import { listVendors } from '../actions/vendorActions'
 import Vendor from '../components/Vendor'
 import VendorScreen from './VendorScreen'
 import { getCart } from '../actions/cartActions'
@@ -40,25 +40,28 @@ const HomeScreen = () => {
   return (
     <>
     {/* vendor home screen */}
+    { userInfo && userInfo?.is_vendor ? 
+      (
+        <div>
+        <VendorScreen id= { `${userInfo?.vendor_id}` } />
+      </div>
+      ):(
+
+      
+
+
     <div>
-    { userInfo?.is_vendor && 
-      <VendorScreen id= { `${userInfo?.vendor_id}` } />
-    }
-    </div>
-
-
-    <div hidden = {userInfo?.is_vendor}>
 
     {/* <h1> Product Categories </h1> */}
     <Row>
       <Col>
       <LinkContainer to='/productscategory/male'>
-          <Jumbotron style={{minWidth: '200px'}}> <center> <h1> Male </h1></center> </Jumbotron>
+          <Jumbotron > <center> <h1> Shop Men </h1></center> </Jumbotron>
       </LinkContainer>
       </Col>
       <Col>
       <LinkContainer to='/productscategory/female'>
-      <Jumbotron style={{minWidth: '200px'}}> <center> <h1> Female </h1></center> </Jumbotron>
+      <Jumbotron > <center> <h1> Shop Women </h1></center> </Jumbotron>
       </LinkContainer>
       </Col>
       </Row>
@@ -94,7 +97,7 @@ const HomeScreen = () => {
           <Row>
           {
             vendors?.map(vendor => (
-              <Col key={vendor.vendor_id} sm={12} md={6} lg={4} xl={3}>
+              <Col key={vendor.vendor_id} sm={6} md={4} lg={3} xl={3}>
                 <Vendor vendor = {vendor} />
               </Col>
             ))
@@ -102,9 +105,8 @@ const HomeScreen = () => {
         </Row>
         )
         }
-            
-
     </div>
+    )}
     </>
   )
 }

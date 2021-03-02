@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { CART_ITEM_ADD_RESET, CART_LIST_RESET } from '../constants/cartConstants'
+import { CUSTOMER_ORDER_DETAILS_RESET, CUSTOMER_ORDER_LIST_RESET, ORDER_CREATE_RESET } from '../constants/orderConstants'
 import {
   USER_DETAILS_FAIL,
   USER_DETAILS_REQUEST,
@@ -72,6 +73,10 @@ export const logout = () => (dispatch) => {
   dispatch({ type: CART_LIST_RESET })
   dispatch({ type: CART_ITEM_ADD_RESET })
   dispatch({ type: USER_LIST_RESET })
+  dispatch({ type: ORDER_CREATE_RESET })
+  dispatch({ type: CUSTOMER_ORDER_LIST_RESET })
+  dispatch({type: CUSTOMER_ORDER_DETAILS_RESET})
+  document.location.href = '/'
 }
 
 export const register = (name, email, password) => async (dispatch) => {

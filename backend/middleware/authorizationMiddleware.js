@@ -1,6 +1,10 @@
 import jwt from 'jsonwebtoken'
 import asyncHandler from 'express-async-handler'
 import pool from '../database/db.js'
+import dotenv from 'dotenv'
+
+
+dotenv.config()
 
 const verifyToken = asyncHandler(async (req, res, next) => {
   let jwtToken

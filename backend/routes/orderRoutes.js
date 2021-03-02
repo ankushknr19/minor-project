@@ -1,7 +1,8 @@
 import express from 'express'
 import { allOrders, anOrder, orderDetails, oneOrderDetails } from '../controllers/orderControllers/adminOrderController.js'
 import { allCustomerOrders, createOrder, aCustomerOrder, oneOrderDetailsCustomer, createOrderDetails, orderDetailsCustomer } from '../controllers/orderControllers/customerOrderController.js'
-import { verifyToken, customer, admin } from '../middleware/authorizationMiddleware.js'
+import { orderDetailsListVendor } from '../controllers/orderControllers/vendorOrderController.js'
+import { verifyToken, customer, admin, vendor } from '../middleware/authorizationMiddleware.js'
 
 const router = express.Router()
 
@@ -29,6 +30,11 @@ router.route('/customer/:id/orderdetails')
 router.route('/customer/orderdetails/:id')
 .get(verifyToken, customer, oneOrderDetailsCustomer)
 
+
+//vendor
+//view all of his order details
+router.route('/vendor/orderdetails')
+        .get(verifyToken, vendor, orderDetailsListVendor)
 
 //admin
 router.route('/')

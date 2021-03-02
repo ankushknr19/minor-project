@@ -6,7 +6,6 @@ import {
     CUSTOMER_ORDER_LIST_REQUEST,
     CUSTOMER_ORDER_LIST_SUCCESS,
     CUSTOMER_ORDER_LIST_FAIL,
-    CUSTOMER_ORDER_DETAILS_RESET,
 } from "../constants/orderConstants"
 
 
@@ -32,7 +31,6 @@ export const getCustomerOrderList = () => async (dispatch, getState) => {
         type: CUSTOMER_ORDER_LIST_SUCCESS,
         payload: data,
       })
-      dispatch({type: CUSTOMER_ORDER_DETAILS_RESET})
     } catch (error) {
       const message =
         error.response && error.response.data.message
@@ -47,7 +45,7 @@ export const getCustomerOrderList = () => async (dispatch, getState) => {
   }
 
 
-export const createOrder = (total_price, shipping_address) => async (dispatch, getState) => {
+export const createOrder = (order) => async (dispatch, getState) => {
     try {
       dispatch({
         type: ORDER_CREATE_REQUEST,
@@ -63,7 +61,7 @@ export const createOrder = (total_price, shipping_address) => async (dispatch, g
         },
       }
   
-      const { data } = await axios.post(`/api/orders`, {total_price, shipping_address}, config)
+      const { data } = await axios.post(`/api/orders`, order, config)
   
       dispatch({
         type: ORDER_CREATE_SUCCESS,

@@ -25,7 +25,7 @@ useEffect(()=>{
   return (
     <header>
 
-      <Navbar bg='dark' variant='dark' expand='lg' collapseOnSelect>
+      <Navbar bg='dark' variant='dark' expand='lg' collapseOnSelect >
         <Container>
           <LinkContainer to='/'>
             <Navbar.Brand>ProjectOne</Navbar.Brand>
@@ -45,13 +45,13 @@ useEffect(()=>{
                 </Nav.Link>
               </LinkContainer>
 
-               {userInfo ? (    
-                 <NavDropdown title={userInfo.name} id='username'  hidden = {userInfo?.is_vendor}>
+               {userInfo && !userInfo?.is_vendor ? (    
+                 <NavDropdown title={userInfo.name} id='username'  >
                  <LinkContainer to='/profile'>
-                   <NavDropdown.Item hidden = {userInfo?.is_vendor}>Profile</NavDropdown.Item>
+                   <NavDropdown.Item >Profile</NavDropdown.Item>
                  </LinkContainer>
                  <LinkContainer to='/myorders'>
-                   <NavDropdown.Item hidden = {userInfo?.is_vendor}>My Orders</NavDropdown.Item>
+                   <NavDropdown.Item >My Orders</NavDropdown.Item>
                  </LinkContainer>
                  <NavDropdown.Item onClick={logoutHandler}>
                    Logout
@@ -91,7 +91,8 @@ useEffect(()=>{
              
 
              {/* vendor header */}
-             {userInfo && userInfo.is_vendor && (
+             {userInfo && userInfo?.is_vendor && (
+                    
                 <NavDropdown title={userInfo.name} id='vendor'>
                   <LinkContainer to={`/vendor/productlist`}>
                     <NavDropdown.Item>Dashboard</NavDropdown.Item>
@@ -106,6 +107,7 @@ useEffect(()=>{
                    Logout
                  </NavDropdown.Item>
                 </NavDropdown>
+  
               )}
             </Nav>
           </Navbar.Collapse>

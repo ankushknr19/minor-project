@@ -60,7 +60,7 @@ export const vendorLogin = asyncHandler(async (req, res) => {
     )
     if (!decryptedPassword) {
         res.status(401)
-        throw new Error ('Password Does not Match')
+        throw new Error ('Incorrect Password')
     }
     const jwtToken = jwtGenerator(userDbResults.rows[0].user_id)
         res.status(200).json({

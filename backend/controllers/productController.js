@@ -9,7 +9,7 @@ import path from 'path'
 const allProducts = async(req,res) => {
     try {
     //    const products = await pool.query("SELECT * FROM  products ")
-       const products = await pool.query("SELECT products.* , vendors.vendor_name FROM  products LEFT JOIN vendors ON products.vendor_id=vendors.vendor_id ORDER BY products.created_at DESC")
+       const products = await pool.query("SELECT products.* , vendors.vendor_name FROM  products LEFT JOIN vendors ON products.vendor_id=vendors.vendor_id WHERE products.is_active ORDER BY products.created_at DESC")
 
         res.json(products.rows)
     } catch (error) {
@@ -24,14 +24,14 @@ const aProduct = async(req,res) => {
     try {
         const product = await pool.query("SELECT products.* , vendors.vendor_name FROM  products LEFT JOIN vendors ON products.vendor_id=vendors.vendor_id  WHERE product_id=$1",[req.params.id])
 
-        if (product.rows[0]==0) {
+        if (product.rows[0]==0 || product.rows[0].is_active==false) {
             res.status(404)
             throw new Error('Product not found')
         } else {
             res.json(product.rows[0])
         }
-    } catch (error) {
-        res.status(404).json(error.message)
+    } catch (err) {
+        res.status(500).json(err.message)
     }
 }
 
@@ -41,7 +41,7 @@ const aProduct = async(req,res) => {
 
 const vendorProducts = async(req,res) => {
     try {
-        const productsVendor = await pool.query("SELECT * FROM products WHERE vendor_id=$1 ORDER BY created_at DESC",[req.params.id])
+        const productsVendor = await pool.query("SELECT * FROM products WHERE vendor_id=$1 AND is_active ORDER BY created_at DESC",[req.params.id])
 
         if (productsVendor.rows[0] == 0) {
             res.status(404)
@@ -55,31 +55,13 @@ const vendorProducts = async(req,res) => {
     }
 }
 
-// @desc    Delete a product
-// @route   DELETE /api/products/:id
-// @access  Private/vendor
-const deleteProduct = asyncHandler(async (req, res) => {
-    try {
-        const product = await pool.query("SELECT * FROM products WHERE product_id=$1",[req.params.id])
-        if (product.rows[0]==0) {
-            res.status(404)
-            throw new Error('Product not found')
-        } else {
-            const deletedProduct = await pool.query("DELETE FROM products WHERE product_id=$1",[req.params.id])
 
-            res.json({ message: 'Product removed' })
-        }
-    } catch (error) {
-        res.status(404).json(error.message)
-    }
-
-})
 // @desc    Delete a product by vendor
 // @route   DELETE /api/products/:id
 // @access  Private/vendor
 const deleteVendorProduct = asyncHandler(async (req, res) => {
     try {
-        const product = await pool.query("SELECT * FROM products WHERE product_id=$1 AND vendor_id=$2",
+        const product = await pool.query("SELECT * FROM products WHERE product_id=$1 AND vendor_id=$2 AND is_active",
         [
             req.params.id,
             req.vendor.rows[0].vendor_id
@@ -88,7 +70,7 @@ const deleteVendorProduct = asyncHandler(async (req, res) => {
             res.status(404)
             throw new Error('Product not found')
         } else {
-            const deletedProduct = await pool.query("DELETE FROM products WHERE product_id=$1 AND vendor_id=$2",
+            const deletedProduct = await pool.query("UPDATE products SET is_active = false WHERE product_id=$1 AND vendor_id=$2",
             [
                 req.params.id,
                 req.vendor.rows[0].vendor_id
@@ -159,4 +141,4 @@ const updateProduct = asyncHandler(async (req, res) => {
     }
 })
 
-export { allProducts, aProduct, vendorProducts, addProduct, updateProduct, deleteProduct, deleteVendorProduct }
+export { allProducts, aProduct, vendorProducts, addProduct, updateProduct, deleteVendorProduct }

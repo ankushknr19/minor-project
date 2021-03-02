@@ -93,7 +93,7 @@ export const deleteProduct = (id) => async (dispatch, getState) => {
 
     const config = {
       headers: {
-        Authorization: `Bearer ${userInfo.jwtToken}`,
+        Authorization: `Bearer ${userInfo?.jwtToken}`,
       },
     }
 

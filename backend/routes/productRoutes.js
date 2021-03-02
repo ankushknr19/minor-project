@@ -1,6 +1,7 @@
 import express from 'express'
-import { addProduct, allProducts, aProduct, updateProduct, vendorProducts, deleteProduct, deleteVendorProduct } from '../controllers/productController.js'
-import { admin, vendor, vendorOrAdmin, verifyToken } from '../middleware/authorizationMiddleware.js'
+import { updateCountInStock } from '../controllers/orderControllers/qtyController.js'
+import { addProduct, allProducts, aProduct, updateProduct, vendorProducts, deleteVendorProduct } from '../controllers/productController.js'
+import { admin, customer, vendor, vendorOrAdmin, verifyToken } from '../middleware/authorizationMiddleware.js'
 
 
 const router = express.Router()
@@ -12,7 +13,7 @@ router.route('/')
 router.route('/:id')
     .get(aProduct)
     .put(verifyToken, vendor, updateProduct)
-    // .delete(verifyToken, admin, deleteProduct)
+    .patch(verifyToken, customer, updateCountInStock)
     .delete(verifyToken, vendor, deleteVendorProduct)
 
 router.get('/vendors/:id', vendorProducts)

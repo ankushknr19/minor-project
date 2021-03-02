@@ -24,7 +24,7 @@ const ProductScreen = ({ match, history }) => {
 
   useEffect(() => {
     dispatch(listProductDetails(match.params.id))
-  }, [dispatch, match])
+  }, [ dispatch, match])
 
   const addToCartHandler = () => {
     if(!userInfo){

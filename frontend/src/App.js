@@ -21,6 +21,8 @@ import CustomerOrderListScreen from './screens/CustomerScreens/CustomerOrderList
 import CustomerOrderDetailsScreen from './screens/CustomerScreens/CustomerOrderDetailsScreen'
 import VendorScreen from './screens/VendorScreen'
 import CategoryScreen from './screens/CategoryScreen'
+import VendorOrderDetailsListScreen from './screens/VendorScreens/VendorOrderDetailsListScreen'
+
 
 const App = () => {
   return (
@@ -48,6 +50,7 @@ const App = () => {
           <Route path='/placeorder' component={PlaceOrderScreen} exact/>
           <Route path='/myorders' component={CustomerOrderListScreen} exact/>
           <Route path='/myorders/:id' component={CustomerOrderDetailsScreen} exact/>
+          <Route path='/vendor/orderlist' component={VendorOrderDetailsListScreen} exact/>
         </Container>
       </main>
       <Footer />

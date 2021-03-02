@@ -6,8 +6,9 @@ import Message from '../../components/Message'
 import { getCustomerAddress } from '../../actions/addressActions'
 import { LinkContainer } from 'react-router-bootstrap'
 import { createOrder } from '../../actions/orderActions'
-import { createOrderDetails } from '../../actions/orderDetailsActions'
+import { createOrderDetails, updateCountInStock } from '../../actions/orderDetailsActions'
 import { ORDER_CREATE_RESET } from '../../constants/orderConstants'
+import { deleteCartItem } from '../../actions/cartActions'
 
 const PlaceOrderScreen = ({ history }) => {
   const dispatch = useDispatch()
@@ -16,8 +17,8 @@ const PlaceOrderScreen = ({ history }) => {
   const { cartItems } = cartList
 
   const customerAddress = useSelector((state) => state.customerAddress)
-  const { error, address: addressCustomer } = customerAddress
-  console.log(addressCustomer);
+  const {  address: addressCustomer } = customerAddress
+
 
   //   Calculate prices
   const addDecimals = (num) => {
@@ -33,12 +34,11 @@ const PlaceOrderScreen = ({ history }) => {
   ).toFixed(2)
 
   const orderCreate = useSelector((state) => state.orderCreate)
-  const { loading: orderCreateLoading, 
+  const { 
     newOrder, 
     success: orderCreateSuccess, 
-    error: orderCreateError } = orderCreate
+     } = orderCreate
 
-  // const success = 'false'
 
   const userLogin = useSelector((state) => state.userLogin)
   const { userInfo } = userLogin
@@ -51,7 +51,18 @@ const PlaceOrderScreen = ({ history }) => {
     else{
     dispatch(getCustomerAddress())
     if (orderCreateSuccess) {
-      history.push(`/myorders/${newOrder.order_id}`)
+        cartItems.forEach( (cartItem)=> {
+          dispatch(createOrderDetails({
+            order_id: newOrder.order_id,
+            product_id: cartItem.product_id,
+            vendor_id: cartItem.vendor_id, 
+            qty: cartItem.qty,
+            price: cartItem.product_price
+          })) 
+          dispatch(updateCountInStock(cartItem.product_id, cartItem.qty ))
+          dispatch(deleteCartItem(cartItem.cart_id))
+        })
+      history.push(`/myorders`)
       dispatch({ type: ORDER_CREATE_RESET })
     }
   }
@@ -59,32 +70,15 @@ const PlaceOrderScreen = ({ history }) => {
   }, [history, orderCreateSuccess, userInfo, dispatch])
 
   const placeOrderHandler = () => {
+    const ss = JSON.stringify(addressCustomer, (k, v) => ( k=== 'address_id' || k === 'customer_id' || k === 'is_default'|| k === 'created_at') ? undefined : v)
+    const str = ss.replace(/"|{|}/g, " ")
     dispatch(
       createOrder({
-        totalPrice: cartItems.totalPrice,
-        shipping_address: "addressCustomer",
+        total_price: cartItems.totalPrice,
+        shipping_address: str
       })
     )
-    if (orderCreateSuccess) {
-    cartItems.forEach( (cartItem)=> {
-      dispatch(createOrderDetails({
-        order_id: newOrder.order_id,
-        product_id: cartItem.product_id,
-        vendor_id: cartItem.vendor_id, 
-        qty: cartItem.qty,
-        price: cartItem.product_price
-      })) 
-    })
-  }
-//   cartItems.forEach( (cartItem)=> {
-//   dispatch(createOrderDetails({
-//     order_id: "81a91029-6592-4ad1-a9e8-a8de9a7ddd5a",
-//     product_id: cartItem.product_id,
-//     vendor_id: cartItem.vendor_id, 
-//     qty: cartItem.qty,
-//     price: cartItem.product_price
-//   })) 
-// })
+    
   }
 
   return (
@@ -139,7 +133,7 @@ const PlaceOrderScreen = ({ history }) => {
             <ListGroup.Item>
               <h3>Order Items</h3>
               {cartItems.length === 0 ? (
-                <Message>Your cart is empty</Message>
+                <Message>No items. Please select items from cart.</Message>
               ) : (
                 <ListGroup variant='flush'>
                   {cartItems.map((item, index) => (
@@ -205,7 +199,7 @@ const PlaceOrderScreen = ({ history }) => {
                 <Button
                   type='button'
                   className='btn-block'
-                  disabled={cartItems === 0 || !addressCustomer}
+                  disabled={cartItems === 0 ||cartItems.length === 0|| !addressCustomer}
                   onClick={placeOrderHandler}
                 >
                   Pay and Place Order

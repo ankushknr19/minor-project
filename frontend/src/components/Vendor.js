@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { Card, CardDeck, Jumbotron } from 'react-bootstrap'
+import { Card, CardDeck, Jumbotron} from 'react-bootstrap'
 import Image from 'react-bootstrap/Image'
 
 const Vendor = ({vendor}) => {
@@ -27,7 +27,12 @@ const Vendor = ({vendor}) => {
                 </Card>    
                 </CardDeck>
             ) : (
-                <Image src = {`${vendor.vendor_logo}`} thumbnail/>
+                <Image src = {`${vendor.vendor_logo}`} 
+                style={{
+                    // width: '200px',
+                    // height: '200px',
+                   }} 
+                   thumbnail/>
             )}
             
         </Link>

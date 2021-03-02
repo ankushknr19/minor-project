@@ -2,8 +2,8 @@ import React, {useEffect } from 'react'
 import { Button, Row, Col, ListGroup, Jumbotron } from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
-import Message from '../components/Message'
-import Loader from '../components/Loader'
+// import Message from '../components/Message'
+// import Loader from '../components/Loader'
 import { getUserDetails } from '../actions/userActions'
 import { deleteCustomerAddress, getCustomerAddress } from '../actions/addressActions'
 
@@ -12,16 +12,18 @@ const ProfileScreen = ({ history }) => {
   const dispatch = useDispatch()
 
   const userDetails = useSelector((state) => state.userDetails)
-  const { loading, error, user } = userDetails
+  const {  user } = userDetails
 
   const customerAddress = useSelector((state) => state.customerAddress)
-  const { loading: addressLoading,
-    error: addressError, 
+  const {
+    //  loading: addressLoading,
+    // error: addressError, 
     address } = customerAddress
 
   const customerAddressDelete = useSelector((state) => state.customerAddressDelete)
-  const { loading: deleteLoading,
-    error: deleteError, 
+  const {
+    //  loading: deleteLoading,
+    // error: deleteError, 
     success: successDelete } = customerAddressDelete
 
   const userLogin = useSelector((state) => state.userLogin)

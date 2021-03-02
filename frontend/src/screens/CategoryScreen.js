@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import Message from '../components/Message'
-import Loader from '../components/Loader'
+// import Message from '../components/Message'
+// import Loader from '../components/Loader'
 import { listProducts } from '../actions/productActions'
 import { Col, Jumbotron, Row } from 'react-bootstrap'
 import Product from '../components/Product'
@@ -13,7 +13,7 @@ const CategoryScreen = ({match, category}) => {
   const dispatch = useDispatch()
 
   const productList = useSelector(state => state.productList)
-  const { loading, error, products } = productList
+  const { products } = productList
 
     useEffect( () => {
         dispatch(listProducts())

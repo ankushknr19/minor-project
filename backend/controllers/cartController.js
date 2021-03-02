@@ -6,7 +6,7 @@ import asyncHandler from 'express-async-handler'
 // @access  Private/customer
 export const cart = asyncHandler(async (req, res) => {
     try {
-        const getCart = await pool.query("SELECT carts.*, products.*, vendors.vendor_name FROM carts JOIN products ON carts.product_id = products.product_id INNER JOIN vendors on products.vendor_id=vendors.vendor_id WHERE customer_id=$1 ORDER BY carts.created_at ASC ",[req.customer.rows[0].customer_id])   
+        const getCart = await pool.query("SELECT carts.*, products.*, vendors.vendor_name FROM carts JOIN products ON carts.product_id = products.product_id INNER JOIN vendors on products.vendor_id=vendors.vendor_id WHERE customer_id=$1 AND products.is_active ORDER BY carts.created_at ASC ",[req.customer.rows[0].customer_id])   
 
             res.json(getCart.rows)
     } catch (error) {

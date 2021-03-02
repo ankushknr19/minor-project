@@ -100,7 +100,7 @@ export const aCustomerOrder = asyncHandler( async(req,res) => {
 // @access  Private/Customer
 export const orderDetailsCustomer = asyncHandler(async(req,res) => {
     try {
-       const orderDetails = await pool.query("SELECT order_details.*, products.product_name, vendors.vendor_name FROM  order_details INNER JOIN products on order_details.product_id = products.product_id  INNER JOIN vendors on order_details.vendor_id = vendors.vendor_id WHERE order_id = $1 AND customer_id = $2  ORDER BY created_at DESC", 
+       const orderDetails = await pool.query("SELECT order_details.*, products.product_name, products.product_image, vendors.vendor_name FROM  order_details INNER JOIN products on order_details.product_id = products.product_id  INNER JOIN vendors on order_details.vendor_id = vendors.vendor_id WHERE order_id = $1 AND customer_id = $2  ORDER BY created_at DESC", 
        [
         req.params.id,
         req.customer.rows[0].customer_id

@@ -13,7 +13,7 @@ import { getCustomerOrderList } from '../actions/orderActions'
 import {VENDOR_DETAILS_RESET} from '../constants/vendorConstants'
 import { LinkContainer } from 'react-router-bootstrap'
 
-const HomeScreen = () => {
+const HomeScreen = ({history}) => {
 
   const dispatch = useDispatch()
 
@@ -28,6 +28,7 @@ const HomeScreen = () => {
   const { loading: vendorListLoading , error: vendorListError, vendors } = vendorList
 
   useEffect(() => {
+    
     dispatch(listProducts())
     dispatch(listVendors())
     if(userInfo && userInfo?.is_customer){
@@ -35,10 +36,13 @@ const HomeScreen = () => {
       dispatch(getCustomerOrderList())
     }
     dispatch({type: VENDOR_DETAILS_RESET})
-  }, [dispatch, userInfo])
+  }, [dispatch, userInfo, history])
 
   return (
     <>
+    {userInfo?.is_admin &&
+      history.push('/admin')
+    }
     {/* vendor home screen */}
     { userInfo && userInfo?.is_vendor ? 
       (
@@ -56,18 +60,37 @@ const HomeScreen = () => {
     <Row>
       <Col>
       <LinkContainer to='/productscategory/male'>
-          <Jumbotron > <center> <h1> Shop Men </h1></center> </Jumbotron>
+          <Jumbotron > <center> <h1> Men Items </h1></center> </Jumbotron>
       </LinkContainer>
       </Col>
       <Col>
       <LinkContainer to='/productscategory/female'>
-      <Jumbotron > <center> <h1> Shop Women </h1></center> </Jumbotron>
+      <Jumbotron > <center> <h1> Women Items </h1></center> </Jumbotron>
       </LinkContainer>
       </Col>
       </Row>
 
+      <Jumbotron style={{minWidth: '200px', height:'100px'}}> <center> <h1> Shops </h1></center> </Jumbotron>
+            {vendorListLoading
+            ? (<Loader/>)
+          : vendorListError
+          ? ( <Message variant='danger'>{error}</Message> )
+        :(
+          <Row>
+          {
+            vendors?.map(vendor => (
+              <Col key={vendor.vendor_id} sm={6} md={4} lg={2} xl={2}>
+                <Vendor vendor = {vendor} />
+              </Col>
+            ))
+          }
+        </Row>
+        )
+        }
 
-      <center><h1>Latest Products</h1></center>
+      {/* <center><h1>Latest Products</h1></center> */}
+      <br/>
+      <Jumbotron style={{minWidth: '200px', height:'100px'}}> <center> <h1> Latest Products </h1></center> </Jumbotron>
       {loading
         ? (<Loader />)
         : error
@@ -88,23 +111,7 @@ const HomeScreen = () => {
         
             </Row>
       }
-            <Jumbotron style={{minWidth: '200px', height:'100px'}}> <center> <h1> Shops </h1></center> </Jumbotron>
-            {vendorListLoading
-            ? (<Loader/>)
-          : vendorListError
-          ? ( <Message variant='danger'>{error}</Message> )
-        :(
-          <Row>
-          {
-            vendors?.map(vendor => (
-              <Col key={vendor.vendor_id} sm={6} md={4} lg={3} xl={3}>
-                <Vendor vendor = {vendor} />
-              </Col>
-            ))
-          }
-        </Row>
-        )
-        }
+            
     </div>
     )}
     </>

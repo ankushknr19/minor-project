@@ -6,6 +6,9 @@ import {
     CUSTOMER_ORDER_LIST_REQUEST,
     CUSTOMER_ORDER_LIST_SUCCESS,
     CUSTOMER_ORDER_LIST_FAIL,
+    ADMIN_ORDER_LIST_REQUEST,
+    ADMIN_ORDER_LIST_SUCCESS,
+    ADMIN_ORDER_LIST_FAIL,
 } from "../constants/orderConstants"
 
 
@@ -77,5 +80,41 @@ export const createOrder = (order) => async (dispatch, getState) => {
         type: ORDER_CREATE_FAIL,
         payload: message,
       })
+      }
+    }
+
+
+    export const getAllOrderList = () => async (dispatch, getState) => {
+      try {
+        dispatch({
+          type:  ADMIN_ORDER_LIST_REQUEST,
+        })
+    
+        const {
+          userLogin: { userInfo },
+        } = getState()
+    
+        const config = {
+          headers: {
+            'content-type': 'application/json',
+            Authorization: `Bearer ${userInfo?.jwtToken}`,
+          },
+        }
+    
+        const { data } = await axios.get(`/api/orders`, config)
+        dispatch({
+          type: ADMIN_ORDER_LIST_SUCCESS,
+          payload: data,
+        })
+      } catch (error) {
+        const message =
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message
+    
+        dispatch({
+          type: ADMIN_ORDER_LIST_FAIL,
+          payload: message,
+        })
       }
     }

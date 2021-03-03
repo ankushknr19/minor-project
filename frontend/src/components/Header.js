@@ -34,7 +34,7 @@ useEffect(()=>{
           <Navbar.Collapse id='basic-navbar-nav'>
             <Nav className='ml-auto'>
 
-              <LinkContainer to='/cart'  hidden = {userInfo?.is_vendor}>
+              <LinkContainer to='/cart'  hidden = {userInfo?.is_vendor || userInfo?.is_admin}>
                 <Nav.Link>
                   <i className='fas fa-shopping-cart'/> 
                   Cart
@@ -48,10 +48,10 @@ useEffect(()=>{
                {userInfo && !userInfo?.is_vendor ? (    
                  <NavDropdown title={userInfo.name} id='username'  >
                  <LinkContainer to='/profile'>
-                   <NavDropdown.Item >Profile</NavDropdown.Item>
+                   <NavDropdown.Item hidden = {userInfo?.is_admin} >Profile</NavDropdown.Item>
                  </LinkContainer>
                  <LinkContainer to='/myorders'>
-                   <NavDropdown.Item >My Orders</NavDropdown.Item>
+                   <NavDropdown.Item hidden = {userInfo?.is_admin} >My Orders</NavDropdown.Item>
                  </LinkContainer>
                  <NavDropdown.Item onClick={logoutHandler}>
                    Logout

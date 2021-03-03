@@ -11,7 +11,10 @@ import {
     UPDATE_COUNTINSTOCK_REQUEST,
     VENDOR_ORDER_DETAILS_LIST_REQUEST,
     VENDOR_ORDER_DETAILS_LIST_SUCCESS,
-    VENDOR_ORDER_DETAILS_LIST_FAIL
+    VENDOR_ORDER_DETAILS_LIST_FAIL,
+    ADMIN_ORDER_DETAILS_REQUEST,
+    ADMIN_ORDER_DETAILS_SUCCESS,
+    ADMIN_ORDER_DETAILS_FAIL
 } from "../constants/orderConstants"
 import { getCustomerOrderList } from './orderActions'
 import { listProducts } from './productActions'
@@ -161,6 +164,42 @@ export const createOrderDetails = (orderDetails) => async (dispatch, getState) =
     
         dispatch({
           type: VENDOR_ORDER_DETAILS_LIST_FAIL,
+          payload: message,
+        })
+      }
+    }
+
+
+    export const getAllOrderDetails = (id) => async (dispatch, getState) => {
+      try {
+        dispatch({
+          type:  ADMIN_ORDER_DETAILS_REQUEST,
+        })
+    
+        const {
+          userLogin: { userInfo },
+        } = getState()
+    
+        const config = {
+          headers: {
+            'content-type': 'application/json',
+            Authorization: `Bearer ${userInfo?.jwtToken}`,
+          },
+        }
+    
+        const { data } = await axios.get(`/api/orders/${id}/orderdetails`, config)
+        dispatch({
+          type: ADMIN_ORDER_DETAILS_SUCCESS,
+          payload: data,
+        })
+      } catch (error) {
+        const message =
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message
+    
+        dispatch({
+          type: ADMIN_ORDER_DETAILS_FAIL,
           payload: message,
         })
       }

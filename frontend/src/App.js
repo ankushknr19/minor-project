@@ -22,6 +22,9 @@ import CustomerOrderDetailsScreen from './screens/CustomerScreens/CustomerOrderD
 import VendorScreen from './screens/VendorScreen'
 import CategoryScreen from './screens/CategoryScreen'
 import VendorOrderDetailsListScreen from './screens/VendorScreens/VendorOrderDetailsListScreen'
+import OrderListScreen from './screens/AdminScreens/orderListScreen'
+import OrderDetailsScreen from './screens/AdminScreens/orderDetailsScreen'
+import AdminHomeScreen from './screens/AdminScreens/AdminHomeScreen'
 
 
 const App = () => {
@@ -50,7 +53,10 @@ const App = () => {
           <Route path='/placeorder' component={PlaceOrderScreen} exact/>
           <Route path='/myorders' component={CustomerOrderListScreen} exact/>
           <Route path='/myorders/:id' component={CustomerOrderDetailsScreen} exact/>
+          <Route path='/orders' component={OrderListScreen} exact/>
+          <Route path='/orders/:id' component={OrderDetailsScreen} exact/>
           <Route path='/vendor/orderlist' component={VendorOrderDetailsListScreen} exact/>
+          <Route path='/admin' component={AdminHomeScreen} exact/>
         </Container>
       </main>
       <Footer />

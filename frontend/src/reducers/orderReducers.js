@@ -20,7 +20,15 @@ import { ORDER_CREATE_FAIL,
     VENDOR_ORDER_DETAILS_LIST_RESET,
     UPDATE_COUNTINSTOCK_FAIL,
     UPDATE_COUNTINSTOCK_SUCCESS,
-    UPDATE_COUNTINSTOCK_REQUEST
+    UPDATE_COUNTINSTOCK_REQUEST,
+    ADMIN_ORDER_DETAILS_REQUEST,
+    ADMIN_ORDER_DETAILS_SUCCESS,
+    ADMIN_ORDER_DETAILS_FAIL,
+    ADMIN_ORDER_DETAILS_RESET,
+    ADMIN_ORDER_LIST_REQUEST,
+    ADMIN_ORDER_LIST_SUCCESS,
+    ADMIN_ORDER_LIST_FAIL,
+    ADMIN_ORDER_LIST_RESET
 } from "../constants/orderConstants"
 
 
@@ -118,3 +126,33 @@ export const orderDetailsCreateReducer = (state = { }, action) => {
     }
   }
 
+
+  export const allOrderListReducer = (state = { allOrders: [] }, action) => {
+    switch (action.type) {
+      case ADMIN_ORDER_LIST_REQUEST:
+        return { loading: true}
+      case ADMIN_ORDER_LIST_SUCCESS:
+        return { loading: false, allOrders: action.payload }
+      case ADMIN_ORDER_LIST_FAIL:
+        return { loading: false, error: action.payload }
+      case ADMIN_ORDER_LIST_RESET:
+        return { allOrders: [] }
+      default:
+        return state
+    }
+  }
+
+  export const allOrderDetailsReducer = (state = { orderDetails: [] }, action) => {
+    switch (action.type) {
+      case ADMIN_ORDER_DETAILS_REQUEST:
+        return { loading: true, orderDetails: [] }
+      case ADMIN_ORDER_DETAILS_SUCCESS:
+        return { loading: false, orderDetails: action.payload }
+      case ADMIN_ORDER_DETAILS_FAIL:
+        return { loading: false, error: action.payload }
+      case ADMIN_ORDER_DETAILS_RESET:
+        return { orderDetails: [] }
+      default:
+        return state
+    }
+  }

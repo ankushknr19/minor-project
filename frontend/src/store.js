@@ -37,10 +37,12 @@ import {
   orderDetailsCreateReducer, 
   customerOrderDetailsReducer,
   countInStockUpdateReducer,
-  vendorOrderDetailsListReducer,
   allOrderListReducer,
   allOrderDetailsReducer,
+  vendorOrderListReducer,
+  vendorOrderDetailsReducer,
 } from './reducers/orderReducers'
+import { orderPayReducer } from './reducers/paymentReducers'
 
 
 
@@ -73,10 +75,12 @@ const reduce = {
   orderDetailsCreate: orderDetailsCreateReducer,
   customerOrderList: customerOrderListReducer,
   customerOrderDetails: customerOrderDetailsReducer,
+  vendorOrderList: vendorOrderListReducer,
+  vendorOrderDetails: vendorOrderDetailsReducer,
   countInStockUpdate: countInStockUpdateReducer,
-  vendorOrderDetailsList: vendorOrderDetailsListReducer,
   allOrderList: allOrderListReducer,
-  allOrderDetails: allOrderDetailsReducer
+  allOrderDetails: allOrderDetailsReducer,
+  orderPay: orderPayReducer,
 }
 
 const reducer = combineReducers(reduce)

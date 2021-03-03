@@ -9,13 +9,22 @@ export const createOrder = asyncHandler(async (req, res) => {
     try {
         
             const createdOrder = await pool.query(` INSERT INTO orders
-        (customer_id, total_price, shipping_address)
+        (customer_id, total_price, shipping_address, is_paid, payment_id)
         VALUES($1,$2,$3) RETURNING * `,
         [
             req.customer.rows[0].customer_id,
             req.body.total_price,
-            req.body.shipping_address
+            req.body.shipping_address,
+            req.body.is_paid,
+            req.body.payment_id
         ])
+
+        const updatePayment = await pool.query(`UPDATE payments SET order_id = $1 WHERE payment_id = $2`,
+        [
+            createdOrder.rows[0].order_id,
+            createdOrder.rows[0].payment_id
+        ]
+        )
     
 
         res.status(201).json(createdOrder.rows[0])

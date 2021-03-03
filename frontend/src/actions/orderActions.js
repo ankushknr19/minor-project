@@ -6,6 +6,9 @@ import {
     CUSTOMER_ORDER_LIST_REQUEST,
     CUSTOMER_ORDER_LIST_SUCCESS,
     CUSTOMER_ORDER_LIST_FAIL,
+    VENDOR_ORDER_LIST_REQUEST,
+    VENDOR_ORDER_LIST_SUCCESS,
+    VENDOR_ORDER_LIST_FAIL,
     ADMIN_ORDER_LIST_REQUEST,
     ADMIN_ORDER_LIST_SUCCESS,
     ADMIN_ORDER_LIST_FAIL,
@@ -83,7 +86,7 @@ export const createOrder = (order) => async (dispatch, getState) => {
       }
     }
 
-
+//admin
     export const getAllOrderList = () => async (dispatch, getState) => {
       try {
         dispatch({
@@ -114,6 +117,43 @@ export const createOrder = (order) => async (dispatch, getState) => {
     
         dispatch({
           type: ADMIN_ORDER_LIST_FAIL,
+          payload: message,
+        })
+      }
+    }
+
+
+    //vendor
+    export const getVendorOrderList = () => async (dispatch, getState) => {
+      try {
+        dispatch({
+          type:  VENDOR_ORDER_LIST_REQUEST,
+        })
+    
+        const {
+          userLogin: { userInfo },
+        } = getState()
+    
+        const config = {
+          headers: {
+            'content-type': 'application/json',
+            Authorization: `Bearer ${userInfo?.jwtToken}`,
+          },
+        }
+    
+        const { data } = await axios.get(`/api/orders/vendor`, config)
+        dispatch({
+          type: VENDOR_ORDER_LIST_SUCCESS,
+          payload: data,
+        })
+      } catch (error) {
+        const message =
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message
+    
+        dispatch({
+          type: VENDOR_ORDER_LIST_FAIL,
           payload: message,
         })
       }

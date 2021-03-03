@@ -9,15 +9,19 @@ import { ORDER_CREATE_FAIL,
     CUSTOMER_ORDER_LIST_REQUEST,
     CUSTOMER_ORDER_LIST_SUCCESS,
     CUSTOMER_ORDER_LIST_FAIL,
+    CUSTOMER_ORDER_LIST_RESET,
     CUSTOMER_ORDER_DETAILS_REQUEST,
     CUSTOMER_ORDER_DETAILS_SUCCESS,
     CUSTOMER_ORDER_DETAILS_FAIL,
     CUSTOMER_ORDER_DETAILS_RESET,
-    CUSTOMER_ORDER_LIST_RESET,
-    VENDOR_ORDER_DETAILS_LIST_REQUEST,
-    VENDOR_ORDER_DETAILS_LIST_SUCCESS,
-    VENDOR_ORDER_DETAILS_LIST_FAIL,
-    VENDOR_ORDER_DETAILS_LIST_RESET,
+    VENDOR_ORDER_LIST_REQUEST,
+    VENDOR_ORDER_LIST_SUCCESS,
+    VENDOR_ORDER_LIST_FAIL,
+    VENDOR_ORDER_LIST_RESET,
+    VENDOR_ORDER_DETAILS_REQUEST,
+    VENDOR_ORDER_DETAILS_SUCCESS,
+    VENDOR_ORDER_DETAILS_FAIL,
+    VENDOR_ORDER_DETAILS_RESET,
     UPDATE_COUNTINSTOCK_FAIL,
     UPDATE_COUNTINSTOCK_SUCCESS,
     UPDATE_COUNTINSTOCK_REQUEST,
@@ -108,24 +112,40 @@ export const orderDetailsCreateReducer = (state = { }, action) => {
         return state
     }
   }
+  
 
-
-
-  export const vendorOrderDetailsListReducer = (state = { vendorOrders: [] }, action) => {
+//vendor
+  export const vendorOrderListReducer = (state = { vendorOrders: [] }, action) => {
     switch (action.type) {
-      case VENDOR_ORDER_DETAILS_LIST_REQUEST:
+      case VENDOR_ORDER_LIST_REQUEST:
         return { loading: true}
-      case VENDOR_ORDER_DETAILS_LIST_SUCCESS:
+      case VENDOR_ORDER_LIST_SUCCESS:
         return { loading: false, vendorOrders: action.payload }
-      case VENDOR_ORDER_DETAILS_LIST_FAIL:
+      case VENDOR_ORDER_LIST_FAIL:
         return { loading: false, error: action.payload }
-      case VENDOR_ORDER_DETAILS_LIST_RESET:
+      case VENDOR_ORDER_LIST_RESET:
         return { vendorOrders: [] }
       default:
         return state
     }
   }
 
+  export const vendorOrderDetailsReducer = (state = { orderDetails: [] }, action) => {
+    switch (action.type) {
+      case VENDOR_ORDER_DETAILS_REQUEST:
+        return { loading: true, orderDetails: [] }
+      case VENDOR_ORDER_DETAILS_SUCCESS:
+        return { loading: false, orderDetails: action.payload }
+      case VENDOR_ORDER_DETAILS_FAIL:
+        return { loading: false, error: action.payload }
+      case VENDOR_ORDER_DETAILS_RESET:
+        return { orderDetails: [] }
+      default:
+        return state
+    }
+  }
+
+//admin
 
   export const allOrderListReducer = (state = { allOrders: [] }, action) => {
     switch (action.type) {

@@ -97,7 +97,7 @@ useEffect(()=>{
                   <LinkContainer to={`/vendor/productlist`}>
                     <NavDropdown.Item>Dashboard</NavDropdown.Item>
                   </LinkContainer>
-                  <LinkContainer to='/vendor/orderlist'>
+                  <LinkContainer to='/vendororders'>
                     <NavDropdown.Item>Orders</NavDropdown.Item>
                   </LinkContainer>
                  <LinkContainer to='/profile'>

@@ -9,9 +9,14 @@ import { createOrder } from '../../actions/orderActions'
 import { createOrderDetails, updateCountInStock } from '../../actions/orderDetailsActions'
 import { ORDER_CREATE_RESET } from '../../constants/orderConstants'
 import { deleteCartItem } from '../../actions/cartActions'
+import KhaltiCheckout from "khalti-checkout-web"
+import { payOrder } from '../../actions/paymentActions'
 
 const PlaceOrderScreen = ({ history }) => {
   const dispatch = useDispatch()
+
+  const userLogin = useSelector((state) => state.userLogin)
+  const { userInfo } = userLogin
 
   const cartList = useSelector((state) => state.cartList)
   const { cartItems } = cartList
@@ -33,6 +38,9 @@ const PlaceOrderScreen = ({ history }) => {
     Number(cartItems.itemsPrice)
   ).toFixed(2)
 
+  const orderPay = useSelector(state => state.orderPay)
+  const {success: orderPaySuccess } = orderPay
+
   const orderCreate = useSelector((state) => state.orderCreate)
   const { 
     newOrder, 
@@ -40,16 +48,15 @@ const PlaceOrderScreen = ({ history }) => {
      } = orderCreate
 
 
-  const userLogin = useSelector((state) => state.userLogin)
-  const { userInfo } = userLogin
-
   useEffect(() => {
 
     if(!userInfo){
       history.push(`/login`)
     }
     else{
+
     dispatch(getCustomerAddress())
+
     if (orderCreateSuccess) {
         cartItems.forEach( (cartItem)=> {
           dispatch(createOrderDetails({
@@ -62,24 +69,67 @@ const PlaceOrderScreen = ({ history }) => {
           dispatch(updateCountInStock(cartItem.product_id, cartItem.qty ))
           dispatch(deleteCartItem(cartItem.cart_id))
         })
+        window.popup("Order created successfully ! ")
       history.push(`/myorders`)
       dispatch({ type: ORDER_CREATE_RESET })
     }
   }
     // eslint-disable-next-line
-  }, [history, orderCreateSuccess, userInfo, dispatch])
+  }, [history, orderPaySuccess, orderCreateSuccess, userInfo, dispatch])
 
-  const placeOrderHandler = () => {
-    const ss = JSON.stringify(addressCustomer, (k, v) => ( k=== 'address_id' || k === 'customer_id' || k === 'is_default'|| k === 'created_at') ? undefined : v)
-    const str = ss.replace(/"|{|}/g, " ")
-    dispatch(
-      createOrder({
-        total_price: cartItems.totalPrice,
-        shipping_address: str
-      })
-    )
+  const ss = JSON.stringify(addressCustomer, (k, v) => ( k=== 'address_id' || k === 'customer_id' || k === 'is_default'|| k === 'created_at') ? undefined : v)
+  const str = ss.replace(/"|{|}/g, " ")
+  // const placeOrderHandler = () => {
+  //   dispatch(
+  //     createOrder({
+  //       total_price: cartItems.totalPrice,
+  //       shipping_address: str,
+  //       payment_id: payload.idx
+  //     })
+  //   )
     
-  }
+  // }
+
+  let config = {
+    "publicKey": "test_public_key_fec3be3b8f8a4d74a77c7a8c9c0ef505",
+    "productIdentity": userInfo.customer_id,
+    "productName": "test",
+    "productUrl": "http://localhost:3000",
+    "eventHandler": {
+        onSuccess (payload) {
+            dispatch(payOrder(payload))
+            if(orderPaySuccess){
+              dispatch(
+                createOrder({
+                  total_price: cartItems.totalPrice,
+                  shipping_address: str,
+                  is_paid: true,
+                  payment_id: payload.idx,
+                })
+              )
+            }
+        },
+        // onError handler is optional
+        onError (error) {
+            // handle errors
+            console.log(error);
+        },
+        onClose () {
+            console.log('widget is closing');
+        }
+    },
+    "paymentPreference": ["KHALTI", "EBANKING","MOBILE_BANKING", "CONNECT_IPS", "SCT"],
+}
+
+let checkout = new KhaltiCheckout(config)
+
+const handleClick = () => {
+  // minimum transaction amount must be 10, i.e 1000 in paisa.
+  checkout.show({ amount: Number((cartItems.totalPrice) * 100).toFixed(1) });
+}
+
+
+
 
   return (
     <>
@@ -200,7 +250,7 @@ const PlaceOrderScreen = ({ history }) => {
                   type='button'
                   className='btn-block'
                   disabled={cartItems === 0 ||cartItems.length === 0|| !addressCustomer}
-                  onClick={placeOrderHandler}
+                  onClick={handleClick}
                 >
                   Pay and Place Order
                 </Button>

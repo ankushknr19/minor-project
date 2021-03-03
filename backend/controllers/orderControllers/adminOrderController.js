@@ -7,7 +7,7 @@ import asyncHandler from 'express-async-handler'
 // @access  Private/Admin
 export const allOrders = asyncHandler(async(req,res) => {
     try {
-       const orders = await pool.query("SELECT * FROM  orders ORDER BY created_at DESC ")
+       const orders = await pool.query("SELECT orders.*, customers.name FROM  orders JOIN customers ON orders.customer_id = customers.customer_id ORDER BY created_at DESC ")
 
         res.json(orders.rows)
     } catch (error) {

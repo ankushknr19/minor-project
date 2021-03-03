@@ -9,9 +9,9 @@ import {
     UPDATE_COUNTINSTOCK_SUCCESS,
     UPDATE_COUNTINSTOCK_FAIL,
     UPDATE_COUNTINSTOCK_REQUEST,
-    VENDOR_ORDER_DETAILS_LIST_REQUEST,
-    VENDOR_ORDER_DETAILS_LIST_SUCCESS,
-    VENDOR_ORDER_DETAILS_LIST_FAIL,
+    VENDOR_ORDER_DETAILS_REQUEST,
+    VENDOR_ORDER_DETAILS_SUCCESS,
+    VENDOR_ORDER_DETAILS_FAIL,
     ADMIN_ORDER_DETAILS_REQUEST,
     ADMIN_ORDER_DETAILS_SUCCESS,
     ADMIN_ORDER_DETAILS_FAIL
@@ -134,10 +134,12 @@ export const createOrderDetails = (orderDetails) => async (dispatch, getState) =
         }
       }  
 
-    export const getVendorOrderDetailsList = () => async (dispatch, getState) => {
+
+//vendor
+    export const getVendorOrderDetails = (id) => async (dispatch, getState) => {
       try {
         dispatch({
-          type:  VENDOR_ORDER_DETAILS_LIST_REQUEST,
+          type:  VENDOR_ORDER_DETAILS_REQUEST,
         })
     
         const {
@@ -151,9 +153,9 @@ export const createOrderDetails = (orderDetails) => async (dispatch, getState) =
           },
         }
     
-        const { data } = await axios.get(`/api/orders/vendor/orderdetails`, config)
+        const { data } = await axios.get(`/api/orders/vendor/${id}/orderdetails`, config)
         dispatch({
-          type: VENDOR_ORDER_DETAILS_LIST_SUCCESS,
+          type: VENDOR_ORDER_DETAILS_SUCCESS,
           payload: data,
         })
       } catch (error) {
@@ -163,13 +165,14 @@ export const createOrderDetails = (orderDetails) => async (dispatch, getState) =
             : error.message
     
         dispatch({
-          type: VENDOR_ORDER_DETAILS_LIST_FAIL,
+          type: VENDOR_ORDER_DETAILS_FAIL,
           payload: message,
         })
       }
-    }
+    }    
 
 
+//admin
     export const getAllOrderDetails = (id) => async (dispatch, getState) => {
       try {
         dispatch({

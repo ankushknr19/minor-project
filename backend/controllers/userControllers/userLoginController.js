@@ -11,7 +11,7 @@ export const customerLogin = asyncHandler(async (req, res) => {
         req.body
     )
 
-    const userDbResults = await pool.query('SELECT users.*, customers.customer_id FROM users LEFT JOIN customers ON users.user_id = customers.user_id WHERE is_customer=true AND email=$1', [
+    const userDbResults = await pool.query('SELECT users.*, customers.customer_id, customers.name FROM users JOIN customers ON users.user_id = customers.user_id WHERE is_customer AND email=$1', [
         validateResult.email,
     ])
     if (userDbResults.rows.length == 0) {
@@ -24,7 +24,7 @@ export const customerLogin = asyncHandler(async (req, res) => {
     )
     if (!decryptedPassword) {
         res.status(401)
-        throw new Error ('Incorrect password. Please try again.')
+        throw new Error ('Incorrect password')
     }
     const jwtToken = jwtGenerator(userDbResults.rows[0].user_id)
         res.status(200).json({
@@ -47,7 +47,7 @@ export const vendorLogin = asyncHandler(async (req, res) => {
         req.body
     )
 
-    const userDbResults = await pool.query('SELECT users.*, vendors.vendor_id FROM users LEFT JOIN vendors ON users.user_id = vendors.user_id WHERE is_vendor=true AND email=$1', [
+    const userDbResults = await pool.query('SELECT users.*, vendors.vendor_id, vendors.vendor_name FROM users JOIN vendors ON users.user_id = vendors.user_id WHERE is_vendor AND email=$1', [
         validateResult.email,
     ])
     if (userDbResults.rows.length == 0) {

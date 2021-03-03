@@ -22,9 +22,8 @@ export const customerRegister = asyncHandler(async (req, res) => {
         throw new Error('Customer Already Exists')
     }else{
     const newUser = await pool.query(
-        `INSERT INTO users(name,email,password,is_customer) VALUES ($1,$2,$3,$4) RETURNING * `,
+        `INSERT INTO users(email,password,is_customer) VALUES ($1,$2,$3) RETURNING * `,
         [
-            validateResult.name,
             validateResult.email,
             hashedPassword,
             true
@@ -34,7 +33,7 @@ export const customerRegister = asyncHandler(async (req, res) => {
         `INSERT INTO customers(user_id,name) VALUES ($1,$2) RETURNING * `,
         [
             newUser.rows[0].user_id,
-            newUser.rows[0].name
+            validateResult.name,
         ]
     )
     const jwtToken = jwtGenerator(newUser.rows[0].user_id)
@@ -43,7 +42,7 @@ export const customerRegister = asyncHandler(async (req, res) => {
             message: 'Customer registered successfully',
             user_id: newUser.rows[0].user_id,
             customer_id: newCustomer.rows[0].customer_id,
-            name: newUser.rows[0].name,
+            name: newCustomer.rows[0].name,
             email: newUser.rows[0].email,
             jwtToken,
             is_admin:  newUser.rows[0].is_admin,
@@ -76,9 +75,8 @@ export const vendorRegister = asyncHandler(async (req, res) => {
         throw new Error('Vendor Already Exists')
     }else{
     const newUser = await pool.query(
-        `INSERT INTO users(name,email,password,is_vendor) VALUES ($1,$2,$3,$4) RETURNING * `,
+        `INSERT INTO users(email,password,is_vendor) VALUES ($1,$2,$3) RETURNING * `,
         [
-            validateResult.name,
             validateResult.email,
             hashedPassword,
             true
@@ -88,7 +86,7 @@ export const vendorRegister = asyncHandler(async (req, res) => {
         `INSERT INTO vendors(user_id,vendor_name) VALUES ($1,$2) RETURNING * `,
         [
             newUser.rows[0].user_id,
-            newUser.rows[0].name
+            validateResult.name,
         ]
     )
     const jwtToken = jwtGenerator(newUser.rows[0].user_id)
@@ -97,7 +95,7 @@ export const vendorRegister = asyncHandler(async (req, res) => {
             message: 'Vendor registered successfully',
             user_id: newUser.rows[0].user_id,
             vendor_id: newVendor.rows[0].vendor_id,
-            name: newUser.rows[0].name,
+            name: newVendor.rows[0].name,
             email: newUser.rows[0].email,
             jwtToken,
             is_admin:  newUser.rows[0].is_admin,

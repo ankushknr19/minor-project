@@ -4,7 +4,6 @@ CREATE DATABASE projectone;
 CREATE TABLE users
 (
     user_id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
-    name VARCHAR(255)NOT NULL,
     email VARCHAR(255) NOT NULL,
     password VARCHAR(255) NOT NULL,
     is_admin BOOLEAN DEFAULT FALSE,
@@ -114,6 +113,7 @@ CREATE TABLE users
                             payment_id uuid,
                             total_price NUMERIC,
                             shipping_address varchar,
+                            is_paid BOOLEAN DEFAULT FALSE,
                             is_fulfilled BOOLEAN DEFAULT FALSE,
                             created_at TIMESTAMP
                             WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP ,
@@ -150,18 +150,26 @@ CREATE TABLE users
 
 );
 
---                                 -- payment done by customers table
---                                 CREATE TABLE payments
---                                 (
---                                     payment_id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
---                                     customer_id uuid,
---                                     amount NUMERIC,
---                                     created_at TIMESTAMP
---                                     WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP ,
---                                 FOREIGN KEY
---                                     (customer_id) REFERENCES customers
---                                     (customer_id)
--- );
+                                -- payment done by customers table
+
+                                CREATE TABLE payments
+                                (
+                                    payment_id VARCHAR(255) PRIMARY KEY ,
+                                    status VARCHAR(255) NOT NULL,
+                                    update_time TIMESTAMP,
+                                    amount real,
+                                    token VARCHAR(255),
+                                    customer_id uuid ,
+                                    order_id uuid,
+                                    payment_type VARCHAR(255),
+                                    payment_gateway VARCHAR(255),
+                                    FOREIGN KEY
+                                            (customer_id) REFERENCES customers
+                                            (customer_id),
+                                    FOREIGN KEY
+                                            (order_id) REFERENCES orders
+                                            (order_id)
+                                );
 
 --  -- product category table
 --                         CREATE TABLE product_categories

@@ -23,18 +23,41 @@ import jwtGenerator from '../../utils/jwtGenerator.js'
         throw new Error('User not found')
     } else {
         const dbResults = await pool.query(
-            `UPDATE users SET name=$1,password=$2 WHERE user_id=$3 RETURNING * `,
+            `UPDATE users SET password=$1 WHERE user_id=$2 RETURNING * `,
             [
-                validateResult.name,
                 hashedPassword,
                 req.user.rows[0].user_id,
             ]
         )
-        res.status(201).json({
-            message: 'Successfully Updated',
-            user_id: dbResults.rows[0].user_id,
-            name: dbResults.rows[0].name,
-            jwtToken: jwtGenerator(searchDbResults.rows[0].user_id),
-        })
+        if(req.user.rows[0].is_customer){
+
+            const updateCustomer = await pool.query(
+                `UPDATE customers SET name=$1 WHERE user_id=$2 RETURNING * `,
+                [
+                    validateResult.name,
+                    req.user.rows[0].user_id,
+                ]
+            )
+            res.status(201).json({
+                message: 'Successfully Updated',
+                user_id: dbResults.rows[0].user_id,
+                name: updateCustomer.rows[0].name,
+                jwtToken: jwtGenerator(searchDbResults.rows[0].user_id),
+            })
+        }else{
+            const updateVendor = await pool.query(
+                `UPDATE customers SET vendor_name=$1 WHERE user_id=$2 RETURNING * `,
+                [
+                    validateResult.name,
+                    req.user.rows[0].user_id,
+                ]
+            )
+            res.status(201).json({
+                message: 'Successfully Updated',
+                user_id: dbResults.rows[0].user_id,
+                name: updateVendor.rows[0].name,
+                jwtToken: jwtGenerator(searchDbResults.rows[0].user_id),
+            })
+        }
     }
 })

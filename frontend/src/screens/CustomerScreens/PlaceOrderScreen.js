@@ -69,8 +69,8 @@ const PlaceOrderScreen = ({ history }) => {
           dispatch(updateCountInStock(cartItem.product_id, cartItem.qty ))
           dispatch(deleteCartItem(cartItem.cart_id))
         })
-        window.popup("Order created successfully ! ")
-      history.push(`/myorders`)
+        history.push(`/myorders`)
+        window.alert("Order created successfully ! ")
       dispatch({ type: ORDER_CREATE_RESET })
     }
   }
@@ -79,16 +79,6 @@ const PlaceOrderScreen = ({ history }) => {
 
   const ss = JSON.stringify(addressCustomer, (k, v) => ( k=== 'address_id' || k === 'customer_id' || k === 'is_default'|| k === 'created_at') ? undefined : v)
   const str = ss.replace(/"|{|}/g, " ")
-  // const placeOrderHandler = () => {
-  //   dispatch(
-  //     createOrder({
-  //       total_price: cartItems.totalPrice,
-  //       shipping_address: str,
-  //       payment_id: payload.idx
-  //     })
-  //   )
-    
-  // }
 
   let config = {
     "publicKey": "test_public_key_fec3be3b8f8a4d74a77c7a8c9c0ef505",
@@ -98,7 +88,7 @@ const PlaceOrderScreen = ({ history }) => {
     "eventHandler": {
         onSuccess (payload) {
             dispatch(payOrder(payload))
-            if(orderPaySuccess){
+            // if(orderPaySuccess){
               dispatch(
                 createOrder({
                   total_price: cartItems.totalPrice,
@@ -107,7 +97,7 @@ const PlaceOrderScreen = ({ history }) => {
                   payment_id: payload.idx,
                 })
               )
-            }
+            // }
         },
         // onError handler is optional
         onError (error) {

@@ -123,7 +123,7 @@ const ProductScreen = ({ match, history }) => {
                     </ListGroup.Item>
                   )}
 
-                <ListGroup.Item hidden = {addCartSuccess && cartNewItem[0]?.product_id === product.product_id}>
+                <ListGroup.Item hidden = {addCartSuccess && cartNewItem?.product_id === product.product_id}>
                   <Button
                   onClick = {addToCartHandler}
                   className='btn-block' type='button' 
@@ -133,7 +133,7 @@ const ProductScreen = ({ match, history }) => {
                   </Button>
                 </ListGroup.Item>
                 <ListGroup.Item 
-                  hidden = { !userInfo || !addCartSuccess || cartNewItem[0]?.product_id !== product.product_id}
+                  hidden = { !userInfo || !addCartSuccess || cartNewItem?.product_id !== product.product_id}
                 >
                 <Link to={'/cart'}>
                    <Button className='btn-block' variant="outline-dark" type='button'>

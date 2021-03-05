@@ -42,7 +42,11 @@ export const deleteCartItem = asyncHandler(async (req, res) => {
 // @access  Private/customer
 export const addCartItem = async (req, res) => {
     try {
-        const searchDb = await pool.query("SELECT * FROM carts WHERE product_id=$1",[req.body.product_id])
+        const searchDb = await pool.query("SELECT * FROM carts WHERE product_id=$1 AND customer_id = $2",
+        [
+            req.body.product_id,
+            req.customer.rows[0].customer_id
+        ])
 
         if (searchDb.rows.length==0) {
             const newCartItem = await pool.query(` INSERT INTO carts (customer_id, product_id, qty )
@@ -79,7 +83,11 @@ export const addCartItem = async (req, res) => {
 export const updateCartItem = asyncHandler(async (req, res) => {
     try {
 
-        const searchDb = await pool.query("SELECT * FROM carts WHERE cart_id=$1",[req.params.id])
+        const searchDb = await pool.query("SELECT * FROM carts WHERE product_id=$1 AND customer_id = $2",
+        [
+            req.body.product_id,
+            req.customer.rows[0].customer_id
+        ])
 
         if (searchDb.rows.length==0) {
             res.status(404)

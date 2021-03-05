@@ -10,7 +10,7 @@ export const createOrder = asyncHandler(async (req, res) => {
         
             const createdOrder = await pool.query(` INSERT INTO orders
         (customer_id, total_price, shipping_address, is_paid, payment_id)
-        VALUES($1,$2,$3) RETURNING * `,
+        VALUES($1,$2,$3,$4,$5) RETURNING * `,
         [
             req.customer.rows[0].customer_id,
             req.body.total_price,

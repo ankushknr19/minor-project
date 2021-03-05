@@ -11,7 +11,7 @@ export const customerRegister = asyncHandler(async (req, res) => {
     const validateResult = await userRegisterValidateSchema.validateAsync(
         req.body
     )
-    const searchUser = await pool.query(`SELECT user_id, name, email FROM users where email=$1`, [
+    const searchUser = await pool.query(`SELECT user_id, email FROM users where email=$1`, [
         validateResult.email,
     ])
 

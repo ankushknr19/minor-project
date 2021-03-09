@@ -67,7 +67,7 @@ export const vendorLogin = asyncHandler(async (req, res) => {
             message: 'Vendor logged in',
             user_id: userDbResults.rows[0].user_id,
             vendor_id: userDbResults.rows[0].vendor_id,
-            name: userDbResults.rows[0].name,
+            name: userDbResults.rows[0].vendor_name,
             email: userDbResults.rows[0].email,
             is_admin:  userDbResults.rows[0].is_admin,
             is_vendor:  userDbResults.rows[0].is_vendor,

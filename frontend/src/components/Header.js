@@ -1,7 +1,9 @@
 import React, { useEffect } from 'react'
+import { Route } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { LinkContainer } from 'react-router-bootstrap'
 import { Navbar, Nav, Container, NavDropdown, Badge } from 'react-bootstrap'
+import SearchBox from './SearchBox'
 import { logout } from '../actions/userActions'
 
 const Header = () => {
@@ -32,6 +34,9 @@ useEffect(()=>{
           </LinkContainer>
           <Navbar.Toggle aria-controls='basic-navbar-nav' />
           <Navbar.Collapse id='basic-navbar-nav'>
+            <Nav hidden = {userInfo?.is_vendor || userInfo?.is_admin}>
+            <Route render={({history})=> <SearchBox history={history} />} />
+            </Nav>
             <Nav className='ml-auto'>
 
               <LinkContainer to='/cart'  hidden = {userInfo?.is_vendor || userInfo?.is_admin}>

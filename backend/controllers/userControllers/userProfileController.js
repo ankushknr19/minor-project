@@ -33,7 +33,7 @@ export const userProfile = asyncHandler(async (req, res) => {
         } else {
             res.status(200).json({
                 user_id: userDbResults.rows[0].user_id,
-                name: userDbResults.rows[0].name,
+                name: userDbResults.rows[0].vendor_name,
                 email: userDbResults.rows[0].email,
                 vendor_id:  userDbResults.rows[0].vendor_id,
                 // is_customer: userDbResults.rows[0].is_customer,

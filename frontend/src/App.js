@@ -26,6 +26,7 @@ import OrderDetailsScreen from './screens/AdminScreens/orderDetailsScreen'
 import AdminHomeScreen from './screens/AdminScreens/AdminHomeScreen'
 import VendorOrderListScreen from './screens/VendorScreens/VendorOrderListScreen'
 import VendorOrderDetailsScreen from './screens/VendorScreens/VendorOrderDetailsScreen'
+import SearchScreen from './screens/SearchScreen'
 
 
 const App = () => {
@@ -34,6 +35,8 @@ const App = () => {
       <Header />
       <main className='py-3'>
         <Container>
+          <Route path='/' component={HomeScreen} exact />
+          <Route path='/search/:keyword' component={SearchScreen} />
           <Route path='/login' component={LoginScreen} exact/>
           <Route path='/register' component={RegisterScreen} exact/>
           <Route path='/login/vendor' component={VendorLoginScreen} exact/>
@@ -44,7 +47,6 @@ const App = () => {
           <Route path='/productscategory/:category' component={CategoryScreen} exact/>
           <Route path='/cart/:id?' component={CartScreen} />
           <Route path='/vendors/:id?' component={VendorScreen} />
-          <Route path='/' component={HomeScreen} exact />
           <Route path='/vendor/productlist' component={ProductListScreen} exact/>
           <Route path='/vendor/productlist/:pageNumber' component={ProductListScreen} exact/>
           <Route path='/vendor/product/:id/edit' component={ProductEditScreen} exact/>

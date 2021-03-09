@@ -10,6 +10,9 @@ import { deleteCustomerAddress, getCustomerAddress } from '../actions/addressAct
 const ProfileScreen = ({ history }) => {
 
   const dispatch = useDispatch()
+  
+  const userLogin = useSelector((state) => state.userLogin)
+  const { userInfo } = userLogin
 
   const userDetails = useSelector((state) => state.userDetails)
   const {  user } = userDetails
@@ -26,8 +29,6 @@ const ProfileScreen = ({ history }) => {
     // error: deleteError, 
     success: successDelete } = customerAddressDelete
 
-  const userLogin = useSelector((state) => state.userLogin)
-  const { userInfo } = userLogin
 
 
   useEffect(() => {
@@ -35,7 +36,9 @@ const ProfileScreen = ({ history }) => {
       history.push('/login')
     } else {
         dispatch(getUserDetails('profile'))
-        dispatch(getCustomerAddress())
+        if(userInfo?.is_customer){
+          dispatch(getCustomerAddress())
+        }
       }
   }, [dispatch, history, userInfo, successDelete])
 
@@ -64,7 +67,7 @@ const ProfileScreen = ({ history }) => {
                         </Button>
                         </LinkContainer>
         </Col>
-        <Col md={4} hidden={user?.is_vendor}>
+        <Col md={4} hidden={userInfo?.is_vendor}>
         <h3>Shipping Address</h3>
         {address?.length === 0 ? (  
             <LinkContainer to='/createaddress'>

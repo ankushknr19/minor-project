@@ -8,6 +8,7 @@ import vendorRoutes from './routes/vendorRoutes.js'
 import uploadRoutes from './routes/uploadRoutes.js'
 import customerRoutes from './routes/customerRoutes.js'
 import orderRoutes from './routes/orderRoutes.js'
+import searchRoutes from './routes/searchRoutes.js'
 
 dotenv.config()
 
@@ -25,6 +26,7 @@ app.use('/api/vendors', vendorRoutes)
 app.use('/api/upload', uploadRoutes)
 app.use('/api/customer', customerRoutes)
 app.use('/api/orders', orderRoutes)
+app.use('/api/search', searchRoutes)
 
 
 const __dirname = path.resolve()

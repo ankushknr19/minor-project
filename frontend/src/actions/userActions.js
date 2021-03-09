@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { CART_ITEM_ADD_RESET, CART_LIST_RESET } from '../constants/cartConstants'
 import { CUSTOMER_ORDER_DETAILS_RESET, CUSTOMER_ORDER_LIST_RESET, ORDER_CREATE_RESET } from '../constants/orderConstants'
+import { PRODUCT_SEARCH_RESET } from '../constants/productConstants'
 import {
   USER_DETAILS_FAIL,
   USER_DETAILS_REQUEST,
@@ -76,6 +77,7 @@ export const logout = () => (dispatch) => {
   dispatch({ type: ORDER_CREATE_RESET })
   dispatch({ type: CUSTOMER_ORDER_LIST_RESET })
   dispatch({type: CUSTOMER_ORDER_DETAILS_RESET})
+  dispatch({type: PRODUCT_SEARCH_RESET})
   document.location.href = '/'
 }
 

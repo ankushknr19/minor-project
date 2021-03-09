@@ -171,17 +171,25 @@ CREATE TABLE users
                                             (order_id)
                                 );
 
---  -- product category table
---                         CREATE TABLE product_categories
---                         (
---                             product_category_id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
---                             product_id uuid,
---                             name VARCHAR(255),
---                             is_active BOOLEAN DEFAULT TRUE,
---                             created_at TIMESTAMP
---                             WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP ,
--- 	                    FOREIGN KEY
---                             (product_id) REFERENCES products
---                             (product_id)
+                                --  -- product category table
+                                --                         CREATE TABLE product_categories
+                                --                         (
+                                --                             product_category_id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+                                --                             product_id uuid,
+                                --                             name VARCHAR(255),
+                                --                             is_active BOOLEAN DEFAULT TRUE,
+                                --                             created_at TIMESTAMP
+                                --                             WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP ,
+                                -- 	                    FOREIGN KEY
+                                --                             (product_id) REFERENCES products
+                                --                             (product_id)
 
--- );
+                                -- );
+
+                                --search using postgres phrase search
+                                CREATE TABLE documents
+                                (
+                                    document_id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+                                    document_text VARCHAR,
+                                    document_tokens TSVECTOR
+                                )
